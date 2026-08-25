@@ -1,0 +1,57 @@
+<UserControl x:Class="SOCDOF.Views.ModuleEmptyView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="Transparent">
+    <Grid Margin="48">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="1"
+                Width="76"
+                Height="76"
+                Background="#E4F4F1"
+                CornerRadius="38"
+                HorizontalAlignment="Center">
+            <TextBlock x:Name="ModuleGlyph"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       FontSize="28"
+                       FontWeight="Bold"
+                       Foreground="{StaticResource AccentDarkBrush}"
+                       Text="—" />
+        </Border>
+
+        <TextBlock x:Name="EmptyTitle"
+                   Grid.Row="2"
+                   Margin="0,24,0,8"
+                   HorizontalAlignment="Center"
+                   FontSize="26"
+                   FontWeight="SemiBold"
+                   Foreground="{StaticResource TextBrush}"
+                   Text="Keine Daten vorhanden" />
+
+        <TextBlock x:Name="EmptyDescription"
+                   Grid.Row="3"
+                   MaxWidth="520"
+                   Margin="0,0,0,24"
+                   HorizontalAlignment="Center"
+                   TextAlignment="Center"
+                   FontSize="14"
+                   Foreground="{StaticResource MutedTextBrush}"
+                   TextWrapping="Wrap"
+                   Text="Erstelle den ersten Eintrag, um ihn hier zu sehen." />
+
+        <Button x:Name="CreateButton"
+                Grid.Row="4"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                Click="CreateButton_OnClick"
+                Content="Erstellen"
+                Style="{StaticResource PrimaryButtonStyle}" />
+    </Grid>
+</UserControl>

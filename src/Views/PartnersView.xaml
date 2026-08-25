@@ -1,0 +1,129 @@
+<UserControl x:Class="SOCDOF.Views.PartnersView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="Transparent">
+    <Grid Margin="0,28,0,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <StackPanel>
+                <TextBlock FontSize="14"
+                           Foreground="{StaticResource MutedTextBrush}"
+                           Text="Kunden und Lieferanten an einem Ort verwalten" />
+                <TextBlock x:Name="PartnerCountText"
+                           Margin="0,8,0,0"
+                           FontSize="12"
+                           Foreground="{StaticResource MutedTextBrush}" />
+            </StackPanel>
+
+            <Button x:Name="NewPartnerButton"
+                    HorizontalAlignment="Right"
+                    Click="NewPartnerButton_OnClick"
+                    Content="+  Neuen Partner anlegen"
+                    Style="{StaticResource PrimaryButtonStyle}" />
+        </Grid>
+
+        <Grid x:Name="PartnerToolbar" Grid.Row="1" Margin="0,24,0,16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0" MaxWidth="420" HorizontalAlignment="Left">
+                <TextBox x:Name="SearchBox"
+                         Padding="12,9"
+                         FontSize="14"
+                         TextChanged="SearchBox_OnTextChanged"
+                         ToolTip="Partner suchen" />
+                <TextBlock Margin="14,0,0,0"
+                           VerticalAlignment="Center"
+                           IsHitTestVisible="False"
+                           Foreground="{StaticResource MutedTextBrush}"
+                           Text="Partner suchen...">
+                    <TextBlock.Style>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Text, ElementName=SearchBox}" Value="">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </Grid>
+
+            <Button x:Name="EditPartnerButton"
+                    Grid.Column="1"
+                    Margin="12,0,0,0"
+                    Click="EditPartnerButton_OnClick"
+                    Content="Bearbeiten"
+                    IsEnabled="False"
+                    Style="{StaticResource SecondaryButtonStyle}" />
+            <Button x:Name="DeletePartnerButton"
+                    Grid.Column="2"
+                    Margin="8,0,0,0"
+                    Click="DeletePartnerButton_OnClick"
+                    Content="Löschen"
+                    IsEnabled="False"
+                    Style="{StaticResource SecondaryButtonStyle}" />
+        </Grid>
+
+        <DataGrid x:Name="PartnerGrid"
+                  Grid.Row="2"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  CanUserResizeRows="False"
+                  IsReadOnly="True"
+                  SelectionChanged="PartnerGrid_OnSelectionChanged"
+                  SelectionMode="Single"
+                  HeadersVisibility="Column"
+                  GridLinesVisibility="Horizontal"
+                  RowHeaderWidth="0"
+                  Background="White"
+                  BorderBrush="{StaticResource BorderBrush}"
+                  BorderThickness="1"
+                  Foreground="{StaticResource TextBrush}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="2*" />
+                <DataGridTextColumn Header="E-Mail" Binding="{Binding Email}" Width="1.5*" />
+                <DataGridTextColumn Header="Telefon" Binding="{Binding Phone}" Width="1.2*" />
+                <DataGridTextColumn Header="Adresse" Binding="{Binding Address}" Width="2*" />
+                <DataGridTextColumn Header="Angelegt am" Binding="{Binding CreatedAt, StringFormat={}{0:dd.MM.yyyy HH:mm}}" Width="1.3*" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Border x:Name="EmptyPartnerState"
+                Grid.Row="2"
+                Padding="32"
+                Background="White"
+                BorderBrush="{StaticResource BorderBrush}"
+                BorderThickness="1">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock HorizontalAlignment="Center"
+                           FontSize="24"
+                           FontWeight="SemiBold"
+                           Foreground="{StaticResource TextBrush}"
+                           Text="Keine Partner vorhanden" />
+                <TextBlock MaxWidth="440"
+                           Margin="0,10,0,22"
+                           HorizontalAlignment="Center"
+                           TextAlignment="Center"
+                           Foreground="{StaticResource MutedTextBrush}"
+                           Text="Lege deinen ersten Kunden oder Lieferanten an, damit er hier erscheint."
+                           TextWrapping="Wrap" />
+                <Button x:Name="EmptyCreatePartnerButton"
+                        HorizontalAlignment="Center"
+                        Click="NewPartnerButton_OnClick"
+                        Content="Neuen Partner anlegen"
+                        Style="{StaticResource PrimaryButtonStyle}" />
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>
