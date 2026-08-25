@@ -1,5 +1,14 @@
 # Completed Tasks
 
+## v2.0.0 Executable Metadata, Branding, and Installer Packaging
+
+- [x] Complete the v2.0.0 release-preparation task set.
+  - Completed: 2026-08-25
+  - Release: v2.0.0
+  - Details: Confirmed the dynamic release-documentation and website-synchronization rules in `INSTRUCTIONS.md`; renamed the published executable to `SOCDOF_2.0.exe`; added Publisher `Yuri / Strudel`, Product `SOCDOF 2.0`, and the full Description metadata; added optional `app.ico` packaging and a `logo.png` fallback; prepared the tag-only Inno Setup workflow for `SOCDOF_setup.exe`; and synchronized all HTML/V2 release documentation.
+  - Verification: `git diff --check` passed. `src/Assets/` contains no uploaded binary assets in this workspace, so icon loading remains optional. Local `dotnet build` and Inno Setup compilation could not run because `dotnet` and `iscc` are unavailable; GitHub Actions performs the Windows verification.
+
+
 ## v2.0.0 Project Guidelines: Website Documentation Synchronization
 
 - [x] Document the mandatory HTML documentation synchronization rule in `INSTRUCTIONS.md`.

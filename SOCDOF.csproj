@@ -7,15 +7,19 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>SOCDOF</RootNamespace>
-    <AssemblyName>SOCDOF</AssemblyName>
+    <AssemblyName>SOCDOF_2.0</AssemblyName>
     <Version>2.0.0</Version>
     <FileVersion>2.0.0</FileVersion>
     <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <Company>Yuri / Strudel</Company>
+    <Product>SOCDOF 2.0</Product>
+    <Description>Strudel's Organization, Commerce &amp; Documentation Offline Flow</Description>
     <ApplicationIcon Condition="Exists('src/Assets/app.ico')">src/Assets/app.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <Resource Include="src/Assets/app.ico" Condition="Exists('src/Assets/app.ico')" />
     <Resource Include="src/Assets/logo.png" Condition="Exists('src/Assets/logo.png')" />
   </ItemGroup>
 

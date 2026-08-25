@@ -1,16 +1,37 @@
+using System.ComponentModel;
 using System.IO;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using SOCDOF.Views;
 
 namespace SOCDOF;
 
-public partial class MainWindow : Window
+public partial class MainWindow : Window, INotifyPropertyChanged
 {
+    private ImageSource? _applicationIconSource;
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    public ImageSource? ApplicationIconSource
+    {
+        get => _applicationIconSource;
+        private set
+        {
+            if (ReferenceEquals(_applicationIconSource, value))
+            {
+                return;
+            }
+
+            _applicationIconSource = value;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ApplicationIconSource)));
+        }
+    }
+
     public MainWindow()
     {
         InitializeComponent();
-        LoadOptionalLogo();
+        LoadOptionalBranding();
         Title = AppConfig.AppName;
         SidebarAppName.Text = AppConfig.AppName;
         PageAppName.Text = AppConfig.AppName;
@@ -18,22 +39,30 @@ public partial class MainWindow : Window
         ModuleContent.Content = new DashboardView();
     }
 
-    private void LoadOptionalLogo()
+    private void LoadOptionalBranding()
     {
-        try
+        foreach (var assetName in new[] { "app.ico", "logo.png" })
         {
-            var logoUri = new Uri("pack://application:,,,/src/Assets/logo.png", UriKind.Absolute);
-            var logo = new BitmapImage(logoUri);
-            AppLogo.Source = logo;
-            Icon = logo;
-        }
-        catch (IOException)
-        {
-            // The logo is optional until the supplied asset is synchronized into the project.
-        }
-        catch (InvalidOperationException)
-        {
-            // WPF can reject a resource URI when the optional asset is not part of the build.
+            try
+            {
+                var assetUri = new Uri($"pack://application:,,,/src/Assets/{assetName}", UriKind.Absolute);
+                var image = new BitmapImage();
+                image.BeginInit();
+                image.CacheOption = BitmapCacheOption.OnLoad;
+                image.UriSource = assetUri;
+                image.EndInit();
+                AppLogo.Source = image;
+                ApplicationIconSource = image;
+                return;
+            }
+            catch (IOException)
+            {
+                // Continue with the next optional branding asset.
+            }
+            catch (InvalidOperationException)
+            {
+                // Continue when WPF cannot resolve an optional resource URI.
+            }
         }
     }
 
