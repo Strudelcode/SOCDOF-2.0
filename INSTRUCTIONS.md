@@ -148,7 +148,11 @@ Technical implementation details that are not useful to end users SHOULD be omit
 
 Bei der Vorbereitung von neuen Major- und Minor-Releases MUSS immer die zugehörige Release-Dokumentation unter `versions/releases/vX-release.md` (z. B. `v2-release.md`, `v3-release.md`) gepflegt werden, da die CI/CD-Pipeline (GitHub Actions) diesen Dateipfad dynamisch als Beschreibung (Release Body) für Veröffentlichungen nutzt.
 
-### 3.6 Synchronized Version Updates
+### 3.6 Website Documentation Synchronization Requirement
+
+Bei jedem neuen Feature, Versionssprung oder wesentlichen Bugfix MÜSSEN die HTML-Dokumentationsseiten (`index.html`, `features.html`, `api.html`) umgehend aktualisiert werden, damit die Präsentation der Anwendung stets den aktuellen Funktionsumfang wiedergibt.
+
+### 3.7 Synchronized Version Updates
 
 Every version increment MUST be updated across all applicable locations in the same change. Check and update:
 

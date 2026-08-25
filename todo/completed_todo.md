@@ -1,5 +1,14 @@
 # Completed Tasks
 
+## v2.0.0 Project Guidelines: Website Documentation Synchronization
+
+- [x] Document the mandatory HTML documentation synchronization rule in `INSTRUCTIONS.md`.
+  - Completed: 2026-08-25
+  - Release: v2.0.0
+  - Details: Added the requirement to update `index.html`, `features.html`, and `api.html` for every new feature, version increment, or significant bug fix so the public documentation remains aligned with the application.
+  - Verification: `git diff --check` passed; the existing release documentation and workflow paths remain unchanged.
+
+
 ## v2.0.0 Project Guidelines: Dynamic Release Documentation
 
 - [x] Document the mandatory dynamic release-notes path in `INSTRUCTIONS.md`.
