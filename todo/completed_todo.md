@@ -1,5 +1,14 @@
 # Completed Tasks
 
+## v2.0.0 MSBuild and Release-Line Audit
+
+- [x] Correct the MSBuild item structure, synchronize the v2.0.0 major release metadata, and update release automation.
+  - Completed: 2026-08-25
+  - Release: v2.0.0
+  - Details: Kept all resource and optional icon declarations inside valid MSBuild groups, synchronized application/project/documentation versions, added V2 technical and user-facing release notes, and classified major tags as full releases while later minor and patch tags are pre-releases using a supported PowerShell output step.
+  - Verification: `git diff --check` passed; optional assets remain safe when absent. Local `dotnet build` is unavailable because the workspace has no .NET SDK; GitHub Actions is the required Windows build verification.
+
+
 ## v1.9.2 CI Fixes and Documentation Navigation
 
 - [x] Fix the reported `ICollectionView` compilation errors and update the documentation structure.

@@ -8,15 +8,15 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>SOCDOF</RootNamespace>
     <AssemblyName>SOCDOF</AssemblyName>
-    <Version>1.9.2</Version>
-    <FileVersion>1.9.2</FileVersion>
-    <AssemblyVersion>1.9.2.0</AssemblyVersion>
+    <Version>2.0.0</Version>
+    <FileVersion>2.0.0</FileVersion>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <ApplicationIcon Condition="Exists('src/Assets/app.ico')">src/Assets/app.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <Resource Include="src/Assets/logo.png" Condition="Exists('src/Assets/logo.png')" />
-    <ApplicationIcon Condition="Exists('src/Assets/app.ico')">src/Assets/app.ico</ApplicationIcon>
   </ItemGroup>
 
   <ItemGroup>

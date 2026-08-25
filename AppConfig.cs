@@ -5,7 +5,7 @@ namespace SOCDOF;
 public static class AppConfig
 {
     public static string AppName = "SOCDOF 2.0";
-    public static string Version = "v1.9.2";
+    public static string Version = "v2.0.0";
     public static string StorageDirectoryName = "SOCDOF";
     public static bool LocalApiEnabled = true;
     public static string LocalApiUrl = "http://localhost:5050";
