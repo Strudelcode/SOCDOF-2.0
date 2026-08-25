@@ -1,5 +1,14 @@
 # Completed Tasks
 
+## v2.0.0 Release Notes Automation
+
+- [x] Configure tagged GitHub releases to use the maintained V2 release document as their release body.
+  - Completed: 2026-08-25
+  - Release: v2.0.0
+  - Details: Added `body_path: versions/releases/v2-release.md` to the tagged release action and disabled generated notes so the curated release summary is used verbatim.
+  - Verification: `git diff --check` passed; the workflow is triggered by version tags and uses the existing Windows publish artifact.
+
+
 ## v2.0.0 MSBuild and Release-Line Audit
 
 - [x] Correct the MSBuild item structure, synchronize the v2.0.0 major release metadata, and update release automation.

@@ -56,5 +56,6 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: ./publish/SOCDOF.exe
+          body_path: versions/releases/v2-release.md
           prerelease: ${{ steps.release-type.outputs.prerelease }}
-          generate_release_notes: true
+          generate_release_notes: false
