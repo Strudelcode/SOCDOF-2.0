@@ -149,9 +149,9 @@ public sealed class LocalApiServer : IAsyncDisposable
 
     private static IResult CreateProblemResponse(string message, Exception exception)
     {
-        Trace.TraceError("{0} {1}", message, exception);
+        Trace.TraceError("{0}: {1}", message, exception);
         return Results.Problem(
-            title: "SOCDOF local API error",
+            title: $"{AppConfig.AppName} local API error",
             detail: "The requested data could not be loaded.",
             statusCode: StatusCodes.Status500InternalServerError);
     }

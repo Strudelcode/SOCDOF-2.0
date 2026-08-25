@@ -31,7 +31,7 @@ public sealed class BackupService
         }
         catch (Exception exception)
         {
-            Trace.TraceError("SOCDOF database backup failed: {0}", exception);
+            Trace.TraceError("{0} database backup failed: {1}", AppConfig.AppName, exception);
 
             try
             {
@@ -42,7 +42,7 @@ public sealed class BackupService
             }
             catch (Exception cleanupException)
             {
-                Trace.TraceError("SOCDOF could not remove an incomplete backup: {0}", cleanupException);
+                Trace.TraceError("{0} could not remove an incomplete backup: {1}", AppConfig.AppName, cleanupException);
             }
 
             return string.Empty;
@@ -79,7 +79,7 @@ public sealed class BackupService
         }
         catch (Exception exception)
         {
-            Trace.TraceError("SOCDOF backup retention cleanup failed: {0}", exception);
+            Trace.TraceError("{0} backup retention cleanup failed: {1}", AppConfig.AppName, exception);
         }
     }
 }

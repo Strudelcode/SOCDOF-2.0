@@ -1,5 +1,21 @@
 # SOCDOF v1 Release
 
+## v1.9.1 - System Audit and Compatibility Update
+
+SOCDOF 2.0 received a full local system audit and a compatibility update for existing databases.
+
+### Included
+
+- Verified the dashboard, partner, product, inventory, sales, local API, export, and Amazon cart workflows together.
+- Existing databases now receive the optional delivery-date column during startup initialization when needed.
+- Runtime diagnostics consistently use the central SOCDOF 2.0 application identity.
+- Confirmed clean production tables without mock, dummy, demo, or fabricated operational records.
+- Confirmed local storage and the ten-backup retention policy remain stable.
+- Synchronized the application and documentation version to `v1.9.1`.
+
+The local .NET build and publish remain pending because the current verification environment does not contain the .NET SDK.
+
+
 ## v1.9.0 - Documentation Website
 
 SOCDOF 2.0 now has a focused documentation website for understanding the local workspace and its integrations.

@@ -1,5 +1,14 @@
 # Completed Tasks
 
+## v1.9.1 System Audit
+
+- [x] Complete the cross-module SOCDOF system audit and close the verification backlog.
+  - Completed: 2026-08-25
+  - Release: v1.9.1
+  - Details: Audited startup lifecycle, centralized branding, SQLite/WAL initialization, existing-database schema compatibility, dashboard, partners, products, inventory, sales, local read-only API, offline ICS/EML exports, Amazon cart links, no-mock data behavior, and ten-file backup retention. Added the `SaleOrders.DeliveryDate` compatibility check and centralized runtime diagnostic labels.
+  - Verification: Static integration checks and `git diff --check` passed; `dotnet build` and `dotnet publish -c Release` remain unavailable because this workspace does not provide the .NET SDK.
+
+
 ## v1.9.0 Documentation Website
 
 - [x] Add a responsive standalone documentation website for SOCDOF 2.0.

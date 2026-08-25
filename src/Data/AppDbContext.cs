@@ -107,6 +107,41 @@ public sealed class AppDbContext : DbContext
         });
     }
 
+    public void EnsureCurrentSchema()
+    {
+        Database.OpenConnection();
+
+        try
+        {
+            using var command = Database.GetDbConnection().CreateCommand();
+            command.CommandText = "PRAGMA table_info(\"SaleOrders\");";
+
+            var hasDeliveryDate = false;
+            using (var reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    if (string.Equals(reader.GetString(1), "DeliveryDate", StringComparison.OrdinalIgnoreCase))
+                    {
+                        hasDeliveryDate = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!hasDeliveryDate)
+            {
+                using var alterCommand = Database.GetDbConnection().CreateCommand();
+                alterCommand.CommandText = "ALTER TABLE \"SaleOrders\" ADD COLUMN \"DeliveryDate\" TEXT NULL;";
+                alterCommand.ExecuteNonQuery();
+            }
+        }
+        finally
+        {
+            Database.CloseConnection();
+        }
+    }
+
     public void ConfigureWalMode()
     {
         Database.OpenConnection();

@@ -20,6 +20,7 @@ public partial class App : Application
             using (var database = AppDbContext.Create())
             {
                 database.Database.EnsureCreated();
+                database.EnsureCurrentSchema();
                 database.ConfigureWalMode();
             }
 
@@ -34,7 +35,7 @@ public partial class App : Application
                 }
                 catch (Exception apiException)
                 {
-                    Trace.TraceError("SOCDOF local API could not start: {0}", apiException);
+                    Trace.TraceError("{0} local API could not start: {1}", AppConfig.AppName, apiException);
                     _localApiServer.DisposeAsync().AsTask().GetAwaiter().GetResult();
                     _localApiServer = null;
                 }
@@ -45,7 +46,7 @@ public partial class App : Application
         }
         catch (Exception exception)
         {
-            Trace.TraceError("SOCDOF failed during startup: {0}", exception);
+            Trace.TraceError("{0} failed during startup: {1}", AppConfig.AppName, exception);
             Shutdown(-1);
         }
     }
@@ -58,7 +59,7 @@ public partial class App : Application
         }
         catch (Exception apiException)
         {
-            Trace.TraceError("SOCDOF local API could not stop cleanly: {0}", apiException);
+            Trace.TraceError("{0} local API could not stop cleanly: {1}", AppConfig.AppName, apiException);
         }
         finally
         {
