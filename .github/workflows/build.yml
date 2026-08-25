@@ -1,3 +1,4 @@
+# CI trigger marker: keep this workflow rerunnable from a normal main-branch push.
 name: Build SOCDOF Windows
 
 on:
