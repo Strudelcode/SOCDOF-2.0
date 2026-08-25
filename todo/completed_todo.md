@@ -1,5 +1,14 @@
 # Completed Tasks
 
+## v2.0.0 Project Guidelines: Dynamic Release Documentation
+
+- [x] Document the mandatory dynamic release-notes path in `INSTRUCTIONS.md`.
+  - Completed: 2026-08-25
+  - Release: v2.0.0
+  - Details: Added the rule requiring `versions/releases/vX-release.md` documentation for every new major and minor release because GitHub Actions resolves that path dynamically for the release body.
+  - Verification: `git diff --check` passed; the workflow and V2 release documentation already use the required path convention.
+
+
 ## v2.0.0 Dynamic Release Notes Resolution
 
 - [x] Resolve GitHub release descriptions from the matching major-version documentation.
