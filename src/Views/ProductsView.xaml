@@ -31,6 +31,7 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
             <Grid Grid.Column="0" MaxWidth="420" HorizontalAlignment="Left">
@@ -71,6 +72,13 @@
                     IsEnabled="False"
                     x:Name="DeleteProductButton"
                     Style="{StaticResource SecondaryButtonStyle}" />
+            <Button Grid.Column="3"
+                    Margin="8,0,0,0"
+                    Click="AmazonCartButton_OnClick"
+                    Content="Amazon Cart-Link generieren"
+                    IsEnabled="False"
+                    x:Name="AmazonCartButton"
+                    Style="{StaticResource SecondaryButtonStyle}" />
         </Grid>
 
         <DataGrid x:Name="ProductGrid"
@@ -81,7 +89,8 @@
                   CanUserResizeRows="False"
                   IsReadOnly="True"
                   SelectionChanged="ProductGrid_OnSelectionChanged"
-                  SelectionMode="Single"
+                  SelectionMode="Extended"
+                  SelectedValuePath="Id"
                   HeadersVisibility="Column"
                   GridLinesVisibility="Horizontal"
                   RowHeaderWidth="0"

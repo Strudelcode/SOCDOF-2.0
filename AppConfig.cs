@@ -4,14 +4,15 @@ namespace SOCDOF;
 
 public static class AppConfig
 {
-    public static string AppName = "SOCDOF";
-    public static string Version = "v1.7.0";
+    public static string AppName = "SOCDOF 2.0";
+    public static string Version = "v1.8.0";
+    public static string StorageDirectoryName = "SOCDOF";
     public static bool LocalApiEnabled = true;
     public static string LocalApiUrl = "http://localhost:5050";
 
     public static string AppDataDirectory { get; } = Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-        AppName);
+        StorageDirectoryName);
 
     public static string BackupsDirectory { get; } = Path.Combine(
         AppDataDirectory,
@@ -19,7 +20,7 @@ public static class AppConfig
 
     public static string DatabasePath { get; } = Path.Combine(
         AppDataDirectory,
-        $"{AppName}.db");
+        $"{StorageDirectoryName}.db");
 
     public static void EnsureDirectories()
     {

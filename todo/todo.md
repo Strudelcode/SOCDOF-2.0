@@ -1,5 +1,15 @@
 # Open Tasks
 
+## v1.8.0 Verification
+
+- [ ] Run `dotnet build` and `dotnet publish -c Release` on a machine with the .NET 8 SDK and Windows desktop targeting support.
+- [ ] Verify the Amazon cart URL flow with valid Amazon product ASIN values on Windows.
+
+## v1.8.0 Follow-up Work
+
+- [ ] Add real localized resources for the new branding and cart-link UI strings.
+- [ ] Add logo assets and set `<ApplicationIcon>` when approved branding files are supplied.
+
 ## v1.7.0 Verification
 
 - [ ] Run `dotnet build` and `dotnet publish -c Release` on a machine with the .NET 8 SDK and Windows desktop targeting support.

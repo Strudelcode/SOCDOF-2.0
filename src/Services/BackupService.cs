@@ -14,7 +14,7 @@ public sealed class BackupService
 
         var backupPath = Path.Combine(
             AppConfig.BackupsDirectory,
-            $"{AppConfig.AppName}_backup_{DateTime.Now.ToString("yyyyMMdd_HHmmss", CultureInfo.InvariantCulture)}.db");
+            $"{AppConfig.StorageDirectoryName}_backup_{DateTime.Now.ToString("yyyyMMdd_HHmmss", CultureInfo.InvariantCulture)}.db");
 
         try
         {
@@ -68,7 +68,7 @@ public sealed class BackupService
         {
             var backups = Directory.EnumerateFiles(
                     AppConfig.BackupsDirectory,
-                    $"{AppConfig.AppName}_backup_*.db")
+                    $"{AppConfig.StorageDirectoryName}_backup_*.db")
                 .OrderByDescending(path => Path.GetFileName(path), StringComparer.Ordinal)
                 .ToList();
 

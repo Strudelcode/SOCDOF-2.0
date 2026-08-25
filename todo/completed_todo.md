@@ -1,5 +1,14 @@
 # Completed Tasks
 
+## v1.8.0 Branding and Amazon Cart Links
+
+- [x] Update SOCDOF branding and add the local Amazon cart-link workflow.
+  - Completed: 2026-08-25
+  - Release: v1.8.0
+  - Details: Updated the central application identity to `SOCDOF 2.0`, preserved the existing `%APPDATA%\\SOCDOF\\` storage location, prepared `src/Assets/` for approved logo files, and added a local multi-item Amazon cart URL generator using selected product SKUs. The generated URL opens through the Windows default browser without cloud APIs or credentials.
+  - Verification: `git diff --check` passed; local .NET build verification remains pending a .NET SDK environment. No logo files were available, so no conditional icon reference was added.
+
+
 ## v1.7.0 Offline Calendar and E-Mail Exports
 
 - [x] Add offline ICS calendar and EML e-mail draft exports for sales orders and partners.

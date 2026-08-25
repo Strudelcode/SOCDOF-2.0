@@ -1,5 +1,21 @@
 # SOCDOF v1 Release
 
+## v1.8.0 - SOCDOF 2.0 Branding and Amazon Cart Links
+
+SOCDOF now carries the `SOCDOF 2.0` application identity and provides a local product-to-cart link workflow.
+
+### Included
+
+- Updated application branding to `SOCDOF 2.0`.
+- Prepared the local assets folder for future logo and icon files.
+- Select one or more catalog products and generate a direct Amazon multi-item cart link from their SKUs.
+- Open the generated link in the user's standard browser.
+- No Amazon account credentials, cloud API, or external integration is required by SOCDOF.
+- Existing local data remains in the established application-data location.
+
+No demo products or placeholder branding files were added. The application icon will be linked when an approved icon asset is supplied.
+
+
 ## v1.7.0 - Offline Calendar and E-Mail Exports
 
 SOCDOF now supports local exports for calendar entries and e-mail drafts without requiring an online service.

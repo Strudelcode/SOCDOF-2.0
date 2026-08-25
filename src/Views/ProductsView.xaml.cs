@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using Microsoft.EntityFrameworkCore;
 using SOCDOF.Data;
+using SOCDOF.Services;
 
 namespace SOCDOF.Views;
 
@@ -158,6 +159,28 @@ public partial class ProductsView : UserControl
         }
     }
 
+    private void AmazonCartButton_OnClick(object sender, RoutedEventArgs e)
+    {
+        var selectedProducts = ProductGrid.SelectedItems
+            .OfType<Product>()
+            .ToList();
+
+        if (selectedProducts.Count == 0)
+        {
+            return;
+        }
+
+        try
+        {
+            var cartLink = AmazonCartLinkService.CreateCartLink(selectedProducts);
+            AmazonCartLinkService.OpenCartLink(cartLink);
+        }
+        catch (Exception exception)
+        {
+            ShowError("Der Amazon Cart-Link konnte nicht geöffnet werden.", exception);
+        }
+    }
+
     private void DeleteProductButton_OnClick(object sender, RoutedEventArgs e)
     {
         if (ProductGrid.SelectedItem is not Product selectedProduct)
@@ -204,8 +227,9 @@ public partial class ProductsView : UserControl
     private void ProductGrid_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         var hasSelection = ProductGrid.SelectedItem is Product;
-        EditProductButton.IsEnabled = hasSelection;
-        DeleteProductButton.IsEnabled = hasSelection;
+        EditProductButton.IsEnabled = ProductGrid.SelectedItems.Count == 1 && hasSelection;
+        DeleteProductButton.IsEnabled = ProductGrid.SelectedItems.Count == 1 && hasSelection;
+        AmazonCartButton.IsEnabled = ProductGrid.SelectedItems.Count > 0;
     }
 
     private void UpdateViewState()
@@ -219,8 +243,9 @@ public partial class ProductsView : UserControl
             ? Visibility.Collapsed
             : Visibility.Visible;
         ProductToolbar.Visibility = hasProducts ? Visibility.Visible : Visibility.Collapsed;
-        EditProductButton.IsEnabled = hasVisibleProducts && ProductGrid.SelectedItem is Product;
-        DeleteProductButton.IsEnabled = hasVisibleProducts && ProductGrid.SelectedItem is Product;
+        EditProductButton.IsEnabled = hasVisibleProducts && ProductGrid.SelectedItems.Count == 1 && ProductGrid.SelectedItem is Product;
+        DeleteProductButton.IsEnabled = hasVisibleProducts && ProductGrid.SelectedItems.Count == 1 && ProductGrid.SelectedItem is Product;
+        AmazonCartButton.IsEnabled = hasVisibleProducts && ProductGrid.SelectedItems.Count > 0;
         ProductCountText.Text = hasProducts
             ? $"{_products.Count} Produkte"
             : "Noch keine Einträge";
