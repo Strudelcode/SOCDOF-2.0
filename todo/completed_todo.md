@@ -1,5 +1,59 @@
 # Completed Tasks
 
+## v1.7.0 Offline Calendar and E-Mail Exports
+
+- [x] Add offline ICS calendar and EML e-mail draft exports for sales orders and partners.
+  - Completed: 2026-08-25
+  - Release: v1.7.0
+  - Details: Added local `.ics` export for order and optional delivery events, EML drafts with plain-text and HTML alternatives, clipboard copying, and Windows save dialogs. Added export actions to the sales detail panel and the partner overview without external cloud dependencies.
+  - Verification: `git diff --check` passed; local build verification remains pending a .NET SDK environment.
+
+
+## v1.6.0 Local Read-Only API
+
+- [x] Add an optional localhost-only REST API server for local third-party read access.
+  - Completed: 2026-08-25
+  - Release: v1.6.0
+  - Details: Added a Kestrel-backed server controlled by `AppConfig.LocalApiEnabled`, bound to `http://localhost:5050`, with read-only `GET /api/status`, `GET /api/products`, and `GET /api/sales` endpoints. The server uses fresh EF Core contexts per request, logs failures without exposing exception details, and is disposed during application shutdown.
+  - Verification: `git diff --check` passed; local build verification remains pending a .NET SDK environment.
+
+
+## v1.5.0 Main Dashboard
+
+- [x] Implement the live SOCDOF dashboard with business metrics and recent activity.
+  - Completed: 2026-08-25
+  - Release: v1.5.0
+  - Details: Added live SQLite metrics for partners, products, low-stock products, sales orders, and revenue; quick actions for partner/product/sale creation; and a combined table of the five latest sales and stock movements. Empty databases display zero values and no fabricated records.
+  - Verification: `git diff --check` passed; local build verification remains pending a .NET SDK environment.
+
+
+## v1.4.1 GitHub Actions Build Workflow
+
+- [x] Add an automated Windows build and artifact workflow for pushes to `main`.
+  - Completed: 2026-08-25
+  - Release: v1.4.1
+  - Details: Added `.github/workflows/build.yml` using `windows-latest`, .NET 8 setup, restore, Release build, self-contained `win-x64` single-file publish, and the `SOCDOF-Windows-Executable` artifact upload.
+  - Verification: YAML structure and Git diff checks passed; the hosted GitHub runner verification is pending the next push to `main`.
+
+
+## v1.4.0 Sales Orders
+
+- [x] Implement the sales order overview and completion workflow.
+  - Completed: 2026-08-25
+  - Release: v1.4.0
+  - Details: Added sales overview with order number, date, partner, and total; partner selection; dynamic product lines with quantity, unit price, line total, and automatic order total; and transactional stock decrement with `StockMoveType.Out` entries for each product.
+  - Verification: `git diff --check` passed; `dotnet build` could not run because the environment does not provide the `dotnet` command.
+
+
+## v1.3.0 Product and Inventory Management
+
+- [x] Implement the product catalog and inventory movement workflow.
+  - Completed: 2026-08-25
+  - Release: v1.3.0
+  - Details: Added product DataGrid with SKU, name, price, stock, and unit columns; create/edit dialogs; low-stock highlighting below 5 units; and inventory inbound/outbound dialogs. Every successful stock change updates `Product.StockQuantity` and creates a `StockMove` in the same SQLite transaction.
+  - Verification: `git diff --check` passed; `dotnet build` could not run because the environment does not provide the `dotnet` command.
+
+
 ## v1.2.0 Partner Management
 
 - [x] Implement partner overview and CRUD management.
@@ -58,6 +112,21 @@
   - Verification: Documentation reviewed for English technical/release content.
 
 ## Verification Limitations
+
+- Local `dotnet build` remains pending because the current environment does not provide the `dotnet` command.
+
+
+- Local `dotnet build` remains pending because the current environment does not provide the `dotnet` command.
+
+
+- The v1.4.1 GitHub Actions workflow has not run in this workspace because it is triggered by a push to `main`.
+
+
+- `dotnet build` was requested for v1.4.0 but could not run because the current environment does not provide the `dotnet` command.
+
+
+- `dotnet build` was requested for v1.3.0 but could not run because the current environment does not provide the `dotnet` command.
+
 
 - `dotnet build` was requested for v1.2.0 but could not run because the current environment does not provide the `dotnet` command.
 

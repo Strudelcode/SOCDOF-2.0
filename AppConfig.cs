@@ -5,7 +5,9 @@ namespace SOCDOF;
 public static class AppConfig
 {
     public static string AppName = "SOCDOF";
-    public static string Version = "v1.2.0";
+    public static string Version = "v1.7.0";
+    public static bool LocalApiEnabled = true;
+    public static string LocalApiUrl = "http://localhost:5050";
 
     public static string AppDataDirectory { get; } = Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),

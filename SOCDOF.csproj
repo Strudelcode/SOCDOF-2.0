@@ -8,10 +8,14 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>SOCDOF</RootNamespace>
     <AssemblyName>SOCDOF</AssemblyName>
-    <Version>1.2.0</Version>
-    <FileVersion>1.2.0</FileVersion>
-    <AssemblyVersion>1.2.0.0</AssemblyVersion>
+    <Version>1.7.0</Version>
+    <FileVersion>1.7.0</FileVersion>
+    <AssemblyVersion>1.7.0.0</AssemblyVersion>
   </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.0" />

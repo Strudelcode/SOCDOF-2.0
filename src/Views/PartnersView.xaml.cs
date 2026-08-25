@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using Microsoft.EntityFrameworkCore;
 using SOCDOF.Data;
+using SOCDOF.Services;
 
 namespace SOCDOF.Views;
 
@@ -151,6 +152,20 @@ public partial class PartnersView : UserControl
         }
     }
 
+    private void PartnerEmailButton_OnClick(object sender, RoutedEventArgs e)
+    {
+        if (PartnerGrid.SelectedItem is not Partner selectedPartner)
+        {
+            return;
+        }
+
+        var content = EmailDraftService.CreatePartnerDraft(selectedPartner);
+        OfflineExportService.OfferEmailDraftExport(
+            Window.GetWindow(this)!,
+            content,
+            $"{SanitizeFileName(selectedPartner.Name)}_E-Mail-Entwurf.eml");
+    }
+
     private void DeletePartnerButton_OnClick(object sender, RoutedEventArgs e)
     {
         if (PartnerGrid.SelectedItem is not Partner selectedPartner)
@@ -203,6 +218,7 @@ public partial class PartnersView : UserControl
         var hasSelection = PartnerGrid.SelectedItem is Partner;
         EditPartnerButton.IsEnabled = hasSelection;
         DeletePartnerButton.IsEnabled = hasSelection;
+        PartnerEmailButton.IsEnabled = hasSelection && !string.IsNullOrWhiteSpace(((PartnerGrid.SelectedItem as Partner)?.Email));
     }
 
     private void UpdateViewState()
@@ -218,6 +234,9 @@ public partial class PartnersView : UserControl
         PartnerToolbar.Visibility = hasPartners ? Visibility.Visible : Visibility.Collapsed;
         EditPartnerButton.IsEnabled = hasVisiblePartners && PartnerGrid.SelectedItem is Partner;
         DeletePartnerButton.IsEnabled = hasVisiblePartners && PartnerGrid.SelectedItem is Partner;
+        PartnerEmailButton.IsEnabled = hasVisiblePartners
+            && PartnerGrid.SelectedItem is Partner partner
+            && !string.IsNullOrWhiteSpace(partner.Email);
         PartnerCountText.Text = hasPartners
             ? $"{_partners.Count} Partner"
             : "Noch keine Einträge";
@@ -226,6 +245,12 @@ public partial class PartnersView : UserControl
         {
             PartnerCountText.Text = "Keine Treffer für die aktuelle Suche";
         }
+    }
+
+    private static string SanitizeFileName(string value)
+    {
+        var invalidCharacters = Path.GetInvalidFileNameChars();
+        return string.Concat(value.Select(character => invalidCharacters.Contains(character) ? '_' : character));
     }
 
     private static void ShowError(string message, Exception exception)

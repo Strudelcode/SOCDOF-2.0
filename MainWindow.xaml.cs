@@ -12,12 +12,13 @@ public partial class MainWindow : Window
         SidebarAppName.Text = AppConfig.AppName;
         PageAppName.Text = AppConfig.AppName;
         SidebarVersion.Text = AppConfig.Version;
-        ShowModule("Dashboard", "Hier entsteht deine zentrale Übersicht.", "Dashboard öffnen", "⌂");
+        ModuleContent.Content = new DashboardView();
     }
 
     private void DashboardButton_OnClick(object sender, RoutedEventArgs e)
     {
-        ShowModule("Dashboard", "Hier entsteht deine zentrale Übersicht.", "Dashboard öffnen", "⌂");
+        PageTitle.Text = "Dashboard";
+        ModuleContent.Content = new DashboardView();
     }
 
     private void PartnersButton_OnClick(object sender, RoutedEventArgs e)
@@ -28,17 +29,20 @@ public partial class MainWindow : Window
 
     private void ProductsButton_OnClick(object sender, RoutedEventArgs e)
     {
-        ShowModule("Produkte", "Lege Produkte an, um Sortiment und Preise lokal zu verwalten.", "Produkt erstellen", "▦");
+        PageTitle.Text = "Produkte";
+        ModuleContent.Content = new ProductsView();
     }
 
     private void SalesButton_OnClick(object sender, RoutedEventArgs e)
     {
-        ShowModule("Verkäufe", "Lege einen Verkauf an, um Aufträge und Positionen zu erfassen.", "Verkauf erstellen", "◫");
+        PageTitle.Text = "Verkäufe";
+        ModuleContent.Content = new SaleOrdersView();
     }
 
     private void InventoryButton_OnClick(object sender, RoutedEventArgs e)
     {
-        ShowModule("Lager", "Lege eine Lagerbewegung an, um Ein- und Ausgänge zu dokumentieren.", "Lagerbewegung erstellen", "⇄");
+        PageTitle.Text = "Lager";
+        ModuleContent.Content = new InventoryView();
     }
 
     private void ShowModule(string title, string description, string createLabel, string glyph)

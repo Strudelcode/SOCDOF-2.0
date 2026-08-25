@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
@@ -147,6 +148,12 @@ public sealed class Product
     public decimal Price { get; set; }
     public decimal StockQuantity { get; set; }
     public string Unit { get; set; } = string.Empty;
+
+    [NotMapped]
+    public bool IsLowStock => StockQuantity < 5m;
+
+    [NotMapped]
+    public string StockStatus => IsLowStock ? "Niedriger Bestand" : "Verfügbar";
 }
 
 public sealed class SaleOrder
@@ -155,6 +162,7 @@ public sealed class SaleOrder
     public string OrderNumber { get; set; } = string.Empty;
     public int PartnerId { get; set; }
     public DateTime OrderDate { get; set; }
+    public DateTime? DeliveryDate { get; set; }
     public decimal TotalAmount { get; set; }
     public Partner Partner { get; set; } = null!;
     public ICollection<SaleOrderLine> Lines { get; set; } = new List<SaleOrderLine>();

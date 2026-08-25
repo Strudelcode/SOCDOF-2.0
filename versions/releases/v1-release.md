@@ -1,5 +1,96 @@
 # SOCDOF v1 Release
 
+## v1.7.0 - Offline Calendar and E-Mail Exports
+
+SOCDOF now supports local exports for calendar entries and e-mail drafts without requiring an online service.
+
+### Included
+
+- Export sales order and optional delivery dates as standard `.ics` calendar files.
+- Import-compatible calendar files for Google Calendar, Outlook, and Apple Calendar.
+- Generate e-mail confirmations as `.eml` drafts with plain-text and HTML content.
+- Copy drafts to the clipboard or save them locally through a Windows file dialog.
+- Export actions in the sales order detail area.
+- Partner e-mail draft action for partners with an e-mail address.
+
+All exports remain offline and no cloud or paid service is required.
+
+
+## v1.6.0 - Local Read-Only API
+
+SOCDOF now offers an optional local API for third-party applications that need to read current business data.
+
+### Included
+
+- Local read-only server at `http://localhost:5050`.
+- Status endpoint with application identity and server state.
+- Product endpoint with current prices and inventory levels.
+- Sales endpoint with order and partner summaries.
+- API disabled/enabled through a central application setting.
+- Automatic server cleanup when SOCDOF closes.
+
+The API does not provide external write access and is not exposed beyond the local machine.
+
+
+## v1.5.0 - Main Dashboard
+
+SOCDOF now opens with a live business dashboard for a quick overview of current operations.
+
+### Included
+
+- Partner count for customers and suppliers.
+- Product count and low-stock count for products below 5 units.
+- Sales order count and total revenue in EUR.
+- Quick actions for creating partners, products, and sales.
+- Recent activity table with the five latest sales and stock movements.
+- Clear zero values and empty activity state when no data exists.
+
+No mock statistics or fabricated records are included.
+
+
+## v1.4.1 - Automated Windows Builds
+
+SOCDOF now creates a downloadable Windows executable automatically whenever changes are pushed to the `main` branch.
+
+### Included
+
+- Automated Windows build on GitHub-hosted infrastructure.
+- Self-contained executable that does not require a separate .NET runtime.
+- Single-file `win-x64` publish output.
+- Downloadable `SOCDOF-Windows-Executable` build artifact.
+
+
+## v1.4.0 - Sales Orders
+
+SOCDOF now supports completing sales orders with automatic inventory tracking.
+
+### Included
+
+- Overview of completed sales with order number, date, partner, and total.
+- Partner selection from existing local partner records.
+- Multiple product positions per order.
+- Automatic calculation of line totals and order total.
+- Automatic stock reduction after order completion.
+- Inventory history entry for every product sold.
+- Prevention of orders that exceed available stock.
+- Empty state without demo sales.
+
+
+## v1.3.0 - Products and Inventory
+
+SOCDOF now supports local product and inventory management without creating any demo data.
+
+### Included
+
+- Product catalog with SKU, name, price, stock, and unit.
+- Forms for creating and editing products.
+- Inventory actions for booking goods in and out.
+- Automatic inventory history for every successful stock change.
+- Protection against booking out more stock than is available.
+- Clear warning color and status for stock below 5 units.
+- Empty states for catalogs without products.
+
+
 ## v1.2.0 - Partner Management
 
 SOCDOF now provides a complete local partner workflow for managing customers and suppliers.
