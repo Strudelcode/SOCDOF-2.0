@@ -1,5 +1,15 @@
 # Open Tasks
 
+## v1.9.0 Verification
+
+- [ ] Run `dotnet build` and `dotnet publish -c Release` on a machine with the .NET 8 SDK and Windows desktop targeting support.
+- [ ] Validate the documentation page in desktop and mobile browsers.
+
+## v1.9.0 Follow-up Work
+
+- [ ] Add localized resource-backed documentation content when the application localization system is available.
+- [ ] Add a generated API schema or machine-readable endpoint examples.
+
 ## v1.8.0 Verification
 
 - [ ] Run `dotnet build` and `dotnet publish -c Release` on a machine with the .NET 8 SDK and Windows desktop targeting support.

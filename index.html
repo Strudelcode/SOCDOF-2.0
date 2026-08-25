@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="SOCDOF 2.0 - Offline-first Organisation, Commerce und Dokumentation fuer Windows.">
+  <meta name="theme-color" content="#101619">
+  <title>SOCDOF 2.0 | Offline Business Workspace</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --ink: #f4f7f5;
+      --muted: #a6b5b2;
+      --faint: #72817e;
+      --canvas: #101619;
+      --surface: #172125;
+      --surface-strong: #1d2a2f;
+      --line: #2c3b3f;
+      --teal: #69d3bd;
+      --teal-dark: #173e3a;
+      --amber: #f2bd6b;
+      --blue: #8ebcf0;
+      --max: 1180px;
+      --radius: 8px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--canvas);
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.6;
+      text-rendering: optimizeLegibility;
+    }
+    a { color: inherit; }
+    a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline-offset: 4px; }
+    .skip-link {
+      position: absolute;
+      left: 16px;
+      top: -60px;
+      padding: 10px 14px;
+      background: var(--amber);
+      color: #17130d;
+      border-radius: 4px;
+      z-index: 10;
+    }
+    .skip-link:focus { top: 16px; }
+
+    .shell { width: min(100% - 40px, var(--max)); margin: 0 auto; }
+    .topbar {
+      border-bottom: 1px solid var(--line);
+      background: rgba(16, 22, 25, .94);
+    }
+    .topbar-inner {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      font-weight: 760;
+      letter-spacing: .02em;
+    }
+    .brand-mark {
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--teal);
+      border-radius: 7px;
+      color: var(--teal);
+      font-size: 12px;
+      letter-spacing: -.04em;
+    }
+    .brand small { display: block; color: var(--faint); font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+    nav { display: flex; align-items: center; gap: 24px; }
+    nav a { color: var(--muted); font-size: 13px; text-decoration: none; }
+    nav a:hover { color: var(--ink); }
+    .nav-cta {
+      padding: 9px 14px;
+      border: 1px solid var(--teal);
+      border-radius: 5px;
+      color: var(--teal);
+    }
+
+    .hero { padding: 92px 0 82px; border-bottom: 1px solid var(--line); }
+    .hero-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(300px, .75fr); gap: 70px; align-items: end; }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      color: var(--teal);
+      font-size: 12px;
+      font-weight: 750;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+    .eyebrow::before { content: ""; width: 28px; height: 1px; background: var(--teal); }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 {
+      max-width: 760px;
+      margin: 20px 0 24px;
+      font-size: clamp(42px, 7vw, 82px);
+      line-height: .98;
+      letter-spacing: -.045em;
+    }
+    .hero-copy { max-width: 650px; color: var(--muted); font-size: 18px; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 0 17px;
+      border-radius: 5px;
+      border: 1px solid var(--teal);
+      color: #081313;
+      background: var(--teal);
+      font-size: 14px;
+      font-weight: 750;
+      text-decoration: none;
+    }
+    .button:hover { background: #91e4d1; border-color: #91e4d1; }
+    .button.secondary { color: var(--ink); background: transparent; border-color: var(--line); }
+    .button.secondary:hover { border-color: var(--muted); background: var(--surface); }
+    .hero-panel {
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+    .panel-label { color: var(--faint); font-size: 11px; font-weight: 750; letter-spacing: .12em; text-transform: uppercase; }
+    .status-row { display: flex; align-items: center; gap: 10px; margin: 18px 0 24px; font-weight: 700; }
+    .status-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 0 5px var(--teal-dark); }
+    .terminal {
+      margin: 0;
+      padding: 15px;
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      color: var(--muted);
+      background: #0d1215;
+      font: 12px/1.8 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      white-space: pre-wrap;
+    }
+    .terminal strong { color: var(--teal); font-weight: 500; }
+
+    section { padding: 92px 0; border-bottom: 1px solid var(--line); }
+    .section-head { display: flex; justify-content: space-between; align-items: end; gap: 32px; margin-bottom: 34px; }
+    .section-kicker { margin-bottom: 10px; color: var(--teal); font-size: 12px; font-weight: 750; letter-spacing: .12em; text-transform: uppercase; }
+    h2 { max-width: 650px; margin-bottom: 0; font-size: clamp(30px, 4vw, 48px); line-height: 1.05; letter-spacing: -.035em; }
+    .section-intro { max-width: 420px; margin-bottom: 0; color: var(--muted); font-size: 15px; }
+    .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .feature-card {
+      min-height: 205px;
+      padding: 23px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+    .feature-card:nth-child(2n) { background: var(--surface-strong); }
+    .feature-number { color: var(--amber); font: 12px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    h3 { margin: 29px 0 9px; font-size: 19px; letter-spacing: -.015em; }
+    .feature-card p { margin-bottom: 0; color: var(--muted); font-size: 14px; }
+
+    .architecture { display: grid; grid-template-columns: .9fr 1.1fr; gap: 14px; }
+    .architecture-card { padding: 28px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+    .architecture-card h3 { margin-top: 0; }
+    .spec-list { display: grid; gap: 0; margin: 0; }
+    .spec-list div { display: flex; justify-content: space-between; gap: 20px; padding: 13px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+    .spec-list div:last-child { border-bottom: 0; }
+    .spec-list dt { color: var(--muted); }
+    .spec-list dd { margin: 0; color: var(--teal); text-align: right; font-weight: 700; }
+
+    .api-layout { display: grid; grid-template-columns: .75fr 1.25fr; gap: 36px; align-items: start; }
+    .api-note { color: var(--muted); font-size: 15px; }
+    .api-note code, .endpoint code, .terminal code { color: var(--teal); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .endpoint-list { display: grid; gap: 10px; }
+    .endpoint {
+      display: grid;
+      grid-template-columns: 78px 1fr;
+      gap: 17px;
+      align-items: start;
+      padding: 19px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+    .method { color: var(--teal); font: 12px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-weight: 700; }
+    .endpoint code { display: block; margin-bottom: 4px; font-size: 15px; }
+    .endpoint p { margin-bottom: 0; color: var(--muted); font-size: 13px; }
+
+    .release-band { display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: center; }
+    .release-band p { max-width: 650px; margin: 12px 0 0; color: var(--muted); }
+    footer { padding: 30px 0 42px; color: var(--faint); font-size: 12px; }
+    .footer-inner { display: flex; justify-content: space-between; gap: 20px; }
+    .footer-inner a { color: var(--muted); text-decoration: none; }
+    .footer-inner a:hover { color: var(--ink); }
+
+    @media (max-width: 850px) {
+      .hero-grid, .architecture, .api-layout { grid-template-columns: 1fr; gap: 34px; }
+      .feature-grid { grid-template-columns: repeat(2, 1fr); }
+      .hero { padding-top: 66px; }
+    }
+    @media (max-width: 620px) {
+      .shell { width: min(100% - 28px, var(--max)); }
+      .topbar-inner { min-height: 68px; }
+      nav a:not(.nav-cta) { display: none; }
+      .hero { padding: 58px 0 64px; }
+      h1 { font-size: clamp(42px, 15vw, 64px); }
+      .hero-copy { font-size: 16px; }
+      section { padding: 64px 0; }
+      .section-head, .release-band, .footer-inner { display: block; }
+      .section-intro { margin-top: 17px; }
+      .feature-grid { grid-template-columns: 1fr; }
+      .feature-card { min-height: 0; }
+      .release-band .button { margin-top: 25px; }
+      .footer-inner p { margin-bottom: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Zum Inhalt springen</a>
+  <header class="topbar">
+    <div class="shell topbar-inner">
+      <a class="brand" href="#top" aria-label="SOCDOF 2.0 Startseite">
+        <span class="brand-mark" aria-hidden="true">S2</span>
+        <span>SOCDOF 2.0<small>Offline workspace</small></span>
+      </a>
+      <nav aria-label="Hauptnavigation">
+        <a href="#features">Features</a>
+        <a href="#api">Local API</a>
+        <a class="nav-cta" href="https://github.com/Strudelcode/SOCDOF/releases">Releases</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top">
+      <div class="shell hero-grid">
+        <div>
+          <div class="eyebrow">Version 1.9.0 · Native Windows</div>
+          <h1>SOCDOF 2.0<br><span style="color:var(--teal)">klar. lokal. belastbar.</span></h1>
+          <p class="hero-copy">Strudel's Organization, Commerce &amp; Documentation Offline Flow ist ein lokaler Business-Workspace fuer Partner, Produkte, Lager und Verkaeufe. Deine Daten bleiben auf deinem Rechner und deine Prozesse bleiben nachvollziehbar.</p>
+          <div class="hero-actions">
+            <a class="button" href="#features">System entdecken</a>
+            <a class="button secondary" href="https://github.com/Strudelcode/SOCDOF/releases">GitHub Releases</a>
+          </div>
+        </div>
+        <aside class="hero-panel" aria-label="Systemstatus">
+          <div class="panel-label">Workspace status</div>
+          <div class="status-row"><span class="status-dot" aria-hidden="true"></span>Offline-first by design</div>
+          <pre class="terminal"><strong>SOCDOF</strong> / local runtime
+storage   %APPDATA%\\SOCDOF\\
+database  SQLite + WAL
+api       localhost:5050
+release   v1.9.0</pre>
+        </aside>
+      </div>
+    </section>
+
+    <section id="features">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">Capabilities</div>
+            <h2>Ein konzentrierter Werkzeugkasten fuer den lokalen Betrieb.</h2>
+          </div>
+          <p class="section-intro">SOCDOF verbindet Stammdaten, Bestandsbewegungen und Auftraege in einer nativen WPF-Oberflaeche ohne Pflichtkonto und ohne Cloud-Abhaengigkeit.</p>
+        </div>
+        <div class="feature-grid">
+          <article class="feature-card"><div class="feature-number">01 / FOUNDATION</div><h3>Offline-first</h3><p>Die Anwendung arbeitet lokal auf Windows. Daten, Backups und Exporte bleiben unter deiner Kontrolle.</p></article>
+          <article class="feature-card"><div class="feature-number">02 / STORAGE</div><h3>SQLite + WAL</h3><p>Eine robuste lokale Datenbasis mit Write-Ahead Logging und automatischen, auf zehn Dateien begrenzten Backups.</p></article>
+          <article class="feature-card"><div class="feature-number">03 / PARTNERS</div><h3>Partnerverwaltung</h3><p>Kunden und Lieferanten suchen, anlegen, bearbeiten und loeschgeschuetzt verwalten.</p></article>
+          <article class="feature-card"><div class="feature-number">04 / CATALOG</div><h3>Produkte &amp; Lager</h3><p>Produktkatalog, Bestandswarnungen sowie protokollierte Ein- und Ausbuchungen fuer jeden Bestand.</p></article>
+          <article class="feature-card"><div class="feature-number">05 / COMMERCE</div><h3>Verkaeufe</h3><p>Auftraege mit Partnern und Positionen erfassen, Summen berechnen und Bestand transaktional reduzieren.</p></article>
+          <article class="feature-card"><div class="feature-number">06 / EXPORTS</div><h3>ICS, EML &amp; Amazon Cart</h3><p>Kalendertermine, E-Mail-Entwuerfe und lokale Amazon-Multi-Item-Links direkt aus deinen Daten erzeugen.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="architecture-title">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">Architecture</div>
+            <h2 id="architecture-title">Technik, die im Hintergrund ruhig bleibt.</h2>
+          </div>
+          <p class="section-intro">Native .NET-8-WPF-Anwendung, lokale Speicherung und nachvollziehbare Bewegungen statt verteilter Pflichtdienste.</p>
+        </div>
+        <div class="architecture">
+          <div class="architecture-card">
+            <h3>Built for local work</h3>
+            <p class="api-note">SOCDOF startet mit einem sauberen Datenbestand. Es werden keine Demo-Produkte, Fake-Partner oder kuenstlichen Kennzahlen erzeugt.</p>
+            <div class="hero-actions"><a class="button secondary" href="https://github.com/Strudelcode/SOCDOF/releases">Release ansehen</a></div>
+          </div>
+          <div class="architecture-card">
+            <dl class="spec-list">
+              <div><dt>Desktop UI</dt><dd>C# / .NET 8 / WPF</dd></div>
+              <div><dt>Persistence</dt><dd>EF Core / SQLite</dd></div>
+              <div><dt>Journal mode</dt><dd>WAL verified</dd></div>
+              <div><dt>Local API</dt><dd>GET only / localhost</dd></div>
+              <div><dt>Exports</dt><dd>ICS / EML / URL</dd></div>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="api" aria-labelledby="api-title">
+      <div class="shell">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">Local REST API</div>
+            <h2 id="api-title">Lesen, ohne Schreibzugriff zu oeffnen.</h2>
+          </div>
+          <p class="section-intro">Der optionale Kestrel-Server bindet nur an <code>http://localhost:5050</code> und stellt aktuelle SQLite-Daten als JSON bereit.</p>
+        </div>
+        <div class="api-layout">
+          <div>
+            <p class="api-note">Die API ist standardmaessig aktiviert und ausschliesslich fuer lokale Drittanwendungen gedacht. Es gibt keine POST-, PUT- oder DELETE-Routen.</p>
+            <pre class="terminal"><strong>GET</strong> http://localhost:5050/api/status
+<strong>GET</strong> http://localhost:5050/api/products
+<strong>GET</strong> http://localhost:5050/api/sales</pre>
+          </div>
+          <div class="endpoint-list">
+            <article class="endpoint"><div class="method">GET</div><div><code>/api/status</code><p>App-Name, Version, Serverstatus, Read-only-Flag und Basis-URL.</p></div></article>
+            <article class="endpoint"><div class="method">GET</div><div><code>/api/products</code><p>Produktliste mit ID, SKU, Name, Preis, aktuellem Bestand und Einheit.</p></div></article>
+            <article class="endpoint"><div class="method">GET</div><div><code>/api/sales</code><p>Verkaufsuebersicht mit Auftrag, Datum, Partner und Gesamtsumme.</p></div></article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="release-title">
+      <div class="shell release-band">
+        <div>
+          <div class="section-kicker">Current release</div>
+          <h2 id="release-title">SOCDOF 2.0 · v1.9.0</h2>
+          <p>Die Dokumentationsseite fasst die lokale Architektur, die Kernmodule und die Read-only-API an einem Ort zusammen.</p>
+        </div>
+        <a class="button" href="https://github.com/Strudelcode/SOCDOF/releases">Zu GitHub Releases</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell footer-inner">
+      <p>SOCDOF 2.0 · Strudel's Organization, Commerce &amp; Documentation Offline Flow</p>
+      <a href="#top">Nach oben</a>
+    </div>
+  </footer>
+</body>
+</html>

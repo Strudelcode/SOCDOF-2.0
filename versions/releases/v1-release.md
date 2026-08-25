@@ -1,5 +1,19 @@
 # SOCDOF v1 Release
 
+## v1.9.0 - Documentation Website
+
+SOCDOF 2.0 now has a focused documentation website for understanding the local workspace and its integrations.
+
+### Included
+
+- Responsive documentation page for desktop, tablet, and mobile screens.
+- Clear overview of offline-first operation and SQLite-WAL storage.
+- Feature summaries for partners, products, inventory, sales, ICS/EML exports, and Amazon cart links.
+- Read-only local REST API reference for status, products, and sales.
+- Direct links to GitHub Releases for downloads and release history.
+- Self-contained design without a JavaScript framework or required online service.
+
+
 ## v1.8.0 - SOCDOF 2.0 Branding and Amazon Cart Links
 
 SOCDOF now carries the `SOCDOF 2.0` application identity and provides a local product-to-cart link workflow.

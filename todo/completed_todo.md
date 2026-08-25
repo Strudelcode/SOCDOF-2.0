@@ -1,5 +1,14 @@
 # Completed Tasks
 
+## v1.9.0 Documentation Website
+
+- [x] Add a responsive standalone documentation website for SOCDOF 2.0.
+  - Completed: 2026-08-25
+  - Release: v1.9.0
+  - Details: Added a framework-free `index.html` with responsive dark-mode styling, product and architecture overview, local REST API endpoint documentation, and GitHub release links. The page contains no mock operational data or external JavaScript dependency.
+  - Verification: HTML structure and `git diff --check` reviewed; local .NET build verification remains pending a .NET SDK environment.
+
+
 ## v1.8.0 Branding and Amazon Cart Links
 
 - [x] Update SOCDOF branding and add the local Amazon cart-link workflow.
