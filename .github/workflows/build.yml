@@ -40,22 +40,43 @@ jobs:
           path: ./publish
           if-no-files-found: error
 
-      - name: Determine release channel
+      - name: Determine release channel and notes file
         if: startsWith(github.ref, 'refs/tags/')
-        id: release-type
+        id: release-metadata
         shell: pwsh
         run: |
-          if ("${{ github.ref_name }}" -match '^v[0-9]+\.0\.0$') {
-            "prerelease=false" >> $env:GITHUB_OUTPUT
-          } else {
-            "prerelease=true" >> $env:GITHUB_OUTPUT
+          $tag = "${{ github.ref_name }}"
+          if ($tag -notmatch '^v[0-9]+\.[0-9]+\.[0-9]+$') {
+            throw "Unsupported release tag: $tag"
           }
+
+          $majorVersion = [regex]::Match($tag, '^v[0-9]+').Value
+          $primaryPath = "versions/releases/${majorVersion}-release.md"
+          $fallbackPath = "versions/${majorVersion.ToUpperInvariant()}.md"
+
+          if (Test-Path -LiteralPath $primaryPath) {
+            $notesPath = $primaryPath
+          } elseif (Test-Path -LiteralPath $fallbackPath) {
+            $notesPath = $fallbackPath
+          } else {
+            throw "No release notes file found for $tag. Checked $primaryPath and $fallbackPath."
+          }
+
+          if ($tag -match '^v[0-9]+\.0\.0$') {
+            $preRelease = 'false'
+          } else {
+            $preRelease = 'true'
+          }
+
+          "notes_path=$notesPath" >> $env:GITHUB_OUTPUT
+          "prerelease=$preRelease" >> $env:GITHUB_OUTPUT
+          Write-Host "Using release notes: $notesPath"
 
       - name: Publish tagged GitHub release
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
           files: ./publish/SOCDOF.exe
-          body_path: versions/releases/v2-release.md
-          prerelease: ${{ steps.release-type.outputs.prerelease }}
+          body_path: ${{ steps.release-metadata.outputs.notes_path }}
+          prerelease: ${{ steps.release-metadata.outputs.prerelease }}
           generate_release_notes: false

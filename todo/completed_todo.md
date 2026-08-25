@@ -1,5 +1,14 @@
 # Completed Tasks
 
+## v2.0.0 Dynamic Release Notes Resolution
+
+- [x] Resolve GitHub release descriptions from the matching major-version documentation.
+  - Completed: 2026-08-25
+  - Release: v2.0.0
+  - Details: The workflow now derives `v2` from a semantic tag such as `v2.0.0`, prefers `versions/releases/v2-release.md`, falls back to `versions/V2.md`, and passes the resolved file through `body_path`.
+  - Verification: The v2.0.0 tag resolves to `versions/releases/v2-release.md`; `git diff --check` is required before delivery.
+
+
 ## v2.0.0 Release Notes Automation
 
 - [x] Configure tagged GitHub releases to use the maintained V2 release document as their release body.
