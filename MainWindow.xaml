@@ -23,6 +23,12 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Grid.Row="0">
+                    <Image x:Name="AppLogo"
+                           Height="52"
+                           Margin="0,0,0,16"
+                           HorizontalAlignment="Left"
+                           Stretch="Uniform"
+                           ToolTip="SOCDOF 2.0" />
                     <TextBlock x:Name="SidebarAppName"
                                FontSize="22"
                                FontWeight="Bold"

@@ -1,5 +1,20 @@
 # SOCDOF v1 Release
 
+## v1.9.2 - Build Fixes, Branding Asset Path, and Multi-Page Documentation
+
+SOCDOF 2.0 now includes the CI compilation fix and a clearer documentation structure for the current release.
+
+### Included
+
+- Fixed the `ICollectionView` compilation errors in the inventory, partner, product, and sales views.
+- Added separate start, feature, and local API documentation pages.
+- Updated all release buttons to the `SOCDOF-2.0` GitHub repository.
+- Synchronized the visible application and documentation version to `v1.9.2`.
+- Prepared the WPF window and sidebar to load the supplied `src/Assets/logo.png` image when it is available.
+
+The PNG binary is not present in the current repository workspace, so the application keeps this branding asset optional until it is synchronized. The project keeps the application icon entry conditional because MSBuild requires a real `.ico` file for `<ApplicationIcon>`.
+
+
 ## v1.9.1 - System Audit and Compatibility Update
 
 SOCDOF 2.0 received a full local system audit and a compatibility update for existing databases.

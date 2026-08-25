@@ -1,5 +1,14 @@
 # Completed Tasks
 
+## v1.9.2 CI Fixes and Documentation Navigation
+
+- [x] Fix the reported `ICollectionView` compilation errors and update the documentation structure.
+  - Completed: 2026-08-25
+  - Release: v1.9.2
+  - Details: Added `System.ComponentModel` to all four affected WPF code-behind files, added `features.html` and `api.html`, synchronized release links to the `SOCDOF-2.0` repository, and updated project/application version metadata. Added conditional WPF resource metadata and optional runtime loading for the supplied branding asset path.
+  - Verification: `git diff --check` passed; the `dotnet` SDK is unavailable in this workspace. The attached PNG could not be synchronized as `src/Assets/logo.png`, so the final Windows build remains dependent on that asset being present in the repository.
+
+
 ## v1.9.1 System Audit
 
 - [x] Complete the cross-module SOCDOF system audit and close the verification backlog.
