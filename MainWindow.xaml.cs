@@ -46,22 +46,36 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             try
             {
                 var assetUri = new Uri($"pack://application:,,,/src/Assets/{assetName}", UriKind.Absolute);
-                var image = new BitmapImage();
-                image.BeginInit();
-                image.CacheOption = BitmapCacheOption.OnLoad;
-                image.UriSource = assetUri;
-                image.EndInit();
-                AppLogo.Source = image;
-                ApplicationIconSource = image;
-                return;
+                var resource = Application.GetResourceStream(assetUri);
+                if (resource is null)
+                {
+                    continue;
+                }
+
+                using (resource.Stream)
+                {
+                    var image = new BitmapImage();
+                    image.BeginInit();
+                    image.CacheOption = BitmapCacheOption.OnLoad;
+                    image.StreamSource = resource.Stream;
+                    image.EndInit();
+                    image.Freeze();
+                    AppLogo.Source = image;
+                    ApplicationIconSource = image;
+                    return;
+                }
             }
-            catch (IOException)
+            catch (FileNotFoundException)
             {
-                // Continue with the next optional branding asset.
+                // An optional asset may be absent from a deployment.
             }
-            catch (InvalidOperationException)
+            catch (DirectoryNotFoundException)
             {
-                // Continue when WPF cannot resolve an optional resource URI.
+                // An optional asset directory may be absent from a deployment.
+            }
+            catch (Exception exception)
+            {
+                throw new InvalidOperationException($"Could not load optional branding asset '{assetName}': {exception.Message}", exception);
             }
         }
     }

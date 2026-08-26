@@ -1,5 +1,13 @@
 # Completed Tasks
 
+## v2.0.1 Startup Diagnostics and Required Setup Release
+
+- [x] Prevent silent startup failures and make the setup installer the required tagged-release package.
+  - Completed: 2026-08-26
+  - Release: v2.0.1
+  - Details: Added global WPF `DispatcherUnhandledException` and `AppDomain.CurrentDomain.UnhandledException` handling with full MessageBox diagnostics; propagated startup backup failures; preserved safe optional loading for missing branding assets while surfacing actual resource errors; and added an explicit CI validation gate for `SOCDOF_setup.exe` before it is uploaded as the primary release asset.
+  - Verification: `git diff --check` passed. Local `dotnet` and `iscc` verification remain unavailable in this workspace; the pushed `v2.0.1` tag delegates Windows build and installer verification to GitHub Actions.
+
 ## v2.0.0 Executable Metadata, Branding, and Installer Packaging
 
 - [x] Complete the v2.0.0 release-preparation task set.

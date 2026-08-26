@@ -46,7 +46,7 @@ public sealed class BackupService
                 Trace.TraceError("{0} could not remove an incomplete backup: {1}", AppConfig.AppName, cleanupException);
             }
 
-            return string.Empty;
+            throw new InvalidOperationException($"{AppConfig.AppName} database backup failed: {exception.Message}", exception);
         }
 
         RemoveOlderBackups();

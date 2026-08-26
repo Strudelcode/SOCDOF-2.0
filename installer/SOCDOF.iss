@@ -1,5 +1,5 @@
 #define AppName "SOCDOF 2.0"
-#define AppVersion "2.0.0"
+#define AppVersion "2.0.1"
 #define AppPublisher "Yuri / Strudel"
 #define AppExeName "SOCDOF_2.0.exe"
 #define SourceDir "..\publish"

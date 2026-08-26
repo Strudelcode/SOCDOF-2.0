@@ -45,11 +45,21 @@ jobs:
         shell: pwsh
         run: choco install innosetup --no-progress --yes
 
-      - name: Build setup installer
+      - name: Build required setup installer
         if: startsWith(github.ref, 'refs/tags/')
         shell: pwsh
         working-directory: installer
         run: iscc SOCDOF.iss
+
+      - name: Validate required setup installer
+        if: startsWith(github.ref, 'refs/tags/')
+        shell: pwsh
+        run: |
+          $installerPath = './installer-output/SOCDOF_setup.exe'
+          if (-not (Test-Path -LiteralPath $installerPath -PathType Leaf)) {
+            throw "The required setup installer was not produced: $installerPath"
+          }
+          Write-Host "Validated release installer: $installerPath"
 
       - name: Upload setup installer artifact
         if: startsWith(github.ref, 'refs/tags/')
@@ -96,8 +106,8 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            ./publish/SOCDOF_2.0.exe
             ./installer-output/SOCDOF_setup.exe
+            ./publish/SOCDOF_2.0.exe
           body_path: ${{ steps.release-metadata.outputs.notes_path }}
           prerelease: ${{ steps.release-metadata.outputs.prerelease }}
           generate_release_notes: false
