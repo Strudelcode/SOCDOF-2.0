@@ -1,5 +1,13 @@
 # Completed Tasks
 
+## v2.0.4 Startup Diagnostics and Self-Contained Windows Packaging
+
+- [x] Persist startup failures to a local error log and verify installation-independent paths and self-contained release publishing.
+  - Completed: 2026-08-26
+  - Release: v2.0.4
+  - Details: Added `%LOCALAPPDATA%\\SOCDOF\\logs\\error.log` handling to the global WPF/AppDomain exception path; retained `%APPDATA%\\SOCDOF\\` for the SQLite database and backups; confirmed no runtime path depends on the process working directory; and verified the workflow publishes `win-x64` with `--self-contained true` before Inno Setup packaging.
+  - Verification: `git diff --check` passed; local .NET compilation requires the unavailable SDK; Windows CI provides the publish and installer verification.
+
 ## v2.0.3 UAC-Free Installer Defaults
 
 - [x] Configure the Windows installer for per-user, UAC-free installation on any selected drive.

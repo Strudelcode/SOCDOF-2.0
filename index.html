@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="SOCDOF 2.0 - Offline-first Organisation, Commerce und Dokumentation fuer Windows.">
-  <title>SOCDOF 2.0 | v2.0.3</title>
+  <title>SOCDOF 2.0 | v2.0.4</title>
   <style>
     :root { color-scheme: dark; --bg:#101619; --surface:#172125; --line:#2c3b3f; --text:#f4f7f5; --muted:#a6b5b2; --teal:#69d3bd; --amber:#f2bd6b; }
     * { box-sizing:border-box; }
@@ -57,13 +57,13 @@
       <aside class="panel" aria-label="Systemstatus"><div class="panel-label">Workspace status</div><p><span class="teal">●</span> Offline-first by design</p><pre>storage   %APPDATA%\\SOCDOF\\
 database  SQLite + WAL
 api       localhost:5050
-release   v2.0.3
+release   v2.0.4
 package   SOCDOF_setup.exe</pre></aside>
     </section>
     <section class="links" aria-label="Dokumentationsbereiche">
       <a class="card" href="features.html"><h2>Features</h2><p>Partner, Produkte, Lager, Verkäufe, Exporte und Amazon-Cart-Links in einer Übersicht.</p></a>
       <a class="card" href="api.html"><h2>Local REST API</h2><p>Read-only-Endpunkte für Status, Produkte und Verkaufsübersichten auf localhost.</p></a>
-      <a class="card" href="https://github.com/Strudelcode/SOCDOF-2.0/releases"><h2>Windows Release</h2><p>Der offizielle Windows-Download ist `SOCDOF_setup.exe` mit freier Zielordnerauswahl. Jeder erfolgreiche `main`-Push prüft die aktuelle App-Version und erzeugt einmalig das passende Release-Tag.</p></a>
+      <a class="card" href="https://github.com/Strudelcode/SOCDOF-2.0/releases"><h2>Windows Release</h2><p>Der offizielle Windows-Download ist `SOCDOF_setup.exe` mit freier Zielordnerauswahl. v2.0.4 schreibt Startup-Fehler zusätzlich nach `%LOCALAPPDATA%\\SOCDOF\\logs\\error.log`; der Build bleibt self-contained.</p></a>
     </section>
   </div></main>
   <footer><div class="shell">SOCDOF 2.0 · <a href="https://github.com/Strudelcode/SOCDOF-2.0/releases">GitHub Releases</a></div></footer>

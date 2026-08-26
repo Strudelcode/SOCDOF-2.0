@@ -93,17 +93,40 @@ public partial class App : Application
 
     private void HandleFatalException(string context, Exception exception, bool shutDown)
     {
-        Trace.TraceError("{0}: {1}", context, exception);
+        var message = $"{context}: {exception.Message}{Environment.NewLine}{Environment.NewLine}Details:{Environment.NewLine}{exception}";
+        Trace.TraceError("{0}", message);
+        WriteErrorLog(message);
 
         if (Interlocked.Exchange(ref _fatalErrorShown, 1) == 0)
         {
-            var message = $"{context}: {exception.Message}{Environment.NewLine}{Environment.NewLine}Details:{Environment.NewLine}{exception}";
-            MessageBox.Show(message, AppConfig.AppName, MessageBoxButton.OK, MessageBoxImage.Error);
+            try
+            {
+                MessageBox.Show(message, AppConfig.AppName, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch (Exception messageBoxException)
+            {
+                Trace.TraceError("{0} error dialog could not be displayed: {1}", AppConfig.AppName, messageBoxException);
+            }
         }
 
         if (shutDown)
         {
             Shutdown(-1);
+        }
+    }
+
+    private static void WriteErrorLog(string message)
+    {
+        try
+        {
+            AppConfig.EnsureDirectories();
+            File.AppendAllText(
+                AppConfig.ErrorLogPath,
+                $"[{DateTimeOffset.Now:O}] {message}{Environment.NewLine}{Environment.NewLine}");
+        }
+        catch (Exception logException)
+        {
+            Trace.TraceError("{0} error log could not be written: {1}", AppConfig.AppName, logException);
         }
     }
 }

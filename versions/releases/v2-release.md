@@ -1,5 +1,18 @@
 # SOCDOF 2.0 Release
 
+## v2.0.4 - 2026-08-26
+
+This patch release makes installed startup failures diagnosable and keeps the Windows package independent of the install drive and an external .NET runtime.
+
+### Highlights
+
+- Fatal startup and unhandled application errors are written to `%LOCALAPPDATA%\\SOCDOF\\logs\\error.log`.
+- The application still displays a Windows error dialog with the exact exception details instead of failing silently.
+- Database and backup paths remain user-specific and are resolved through Windows application-data locations, so installing on another drive does not change where operational data is stored.
+- The Windows release uses a self-contained `win-x64` publish and packages that runtime into `SOCDOF_setup.exe`.
+- The official Windows download remains the installer only: `SOCDOF_setup.exe`.
+- Application, project, installer, website, and preview metadata are synchronized to `v2.0.4`.
+
 ## v2.0.3 - 2026-08-26
 
 This patch release enables a fully user-controlled Windows installation without an administrator prompt.
