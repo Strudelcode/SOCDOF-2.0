@@ -8,7 +8,7 @@ This patch release makes startup failures visible and turns the Windows setup pa
 
 - Global WPF and AppDomain exception handling now displays the exact failure details in a MessageBox instead of failing silently.
 - SQLite initialization, AppData directory creation, and startup backup failures are surfaced with actionable diagnostics.
-- Optional icon and logo assets remain safe when absent, while invalid or unreadable assets are reported clearly.
+- The uploaded `socdof_v2_icon.ico` is used as the Windows application icon, with `socdof_v2_icon.png` as the visual fallback; missing or invalid assets are handled clearly.
 - Tagged GitHub Actions builds validate and publish `SOCDOF_setup.exe` as the primary Windows release asset alongside `SOCDOF_2.0.exe`.
 - Application and project metadata are synchronized to `v2.0.1`.
 

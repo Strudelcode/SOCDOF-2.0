@@ -14,13 +14,13 @@
     <Company>Yuri / Strudel</Company>
     <Product>SOCDOF 2.0</Product>
     <Description>Strudel's Organization, Commerce &amp; Documentation Offline Flow</Description>
-    <ApplicationIcon Condition="Exists('src/Assets/app.ico')">src/Assets/app.ico</ApplicationIcon>
+    <ApplicationIcon Condition="Exists('src/Assets/socdof_v2_icon.ico')">src/Assets/socdof_v2_icon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    <Resource Include="src/Assets/app.ico" Condition="Exists('src/Assets/app.ico')" />
-    <Resource Include="src/Assets/logo.png" Condition="Exists('src/Assets/logo.png')" />
+    <Resource Include="src/Assets/socdof_v2_icon.ico" Condition="Exists('src/Assets/socdof_v2_icon.ico')" />
+    <Resource Include="src/Assets/socdof_v2_icon.png" Condition="Exists('src/Assets/socdof_v2_icon.png')" />
   </ItemGroup>
 
   <ItemGroup>

@@ -41,7 +41,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
     private void LoadOptionalBranding()
     {
-        foreach (var assetName in new[] { "app.ico", "logo.png" })
+        foreach (var assetName in new[] { "socdof_v2_icon.ico", "socdof_v2_icon.png" })
         {
             try
             {
