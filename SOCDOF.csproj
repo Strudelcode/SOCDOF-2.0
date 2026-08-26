@@ -8,9 +8,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>SOCDOF</RootNamespace>
     <AssemblyName>SOCDOF_2.0</AssemblyName>
-    <Version>2.0.2</Version>
-    <FileVersion>2.0.2</FileVersion>
-    <AssemblyVersion>2.0.2.0</AssemblyVersion>
+    <Version>2.0.3</Version>
+    <FileVersion>2.0.3</FileVersion>
+    <AssemblyVersion>2.0.3.0</AssemblyVersion>
     <Company>Yuri / Strudel</Company>
     <Product>SOCDOF 2.0</Product>
     <Description>Strudel's Organization, Commerce &amp; Documentation Offline Flow</Description>

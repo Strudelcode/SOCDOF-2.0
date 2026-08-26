@@ -1,7 +1,7 @@
 {
   "name": "socdof-documentation-preview",
   "private": true,
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Local preview server for the SOCDOF static documentation pages",
   "scripts": {
     "dev": "node scripts/preview-server.js"

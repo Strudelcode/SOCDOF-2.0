@@ -1,5 +1,5 @@
 #define AppName "SOCDOF 2.0"
-#define AppVersion "2.0.2"
+#define AppVersion "2.0.3"
 #define AppPublisher "Yuri / Strudel"
 #define AppExeName "SOCDOF_2.0.exe"
 #define SourceDir "..\publish"
@@ -10,8 +10,10 @@ AppId={{B8CBE0F7-5E7D-4B69-9A4A-70F079B5B0C4}
 AppName={#AppName}
 AppVersion={#AppVersion}
 AppPublisher={#AppPublisher}
-DefaultDirName={autopf}\SOCDOF 2.0
+DefaultDirName={localappdata}\Programs\SOCDOF 2.0
 DisableDirPage=no
+PrivilegesRequired=lowest
+UsedUserAreasWarning=no
 DefaultGroupName={#AppName}
 OutputDir={#OutputDir}
 OutputBaseFilename=SOCDOF_setup

@@ -1,5 +1,18 @@
 # SOCDOF 2.0 Release
 
+## v2.0.3 - 2026-08-26
+
+This patch release enables a fully user-controlled Windows installation without an administrator prompt.
+
+### Highlights
+
+- `SOCDOF_setup.exe` installs per user with no UAC administrator request.
+- The installer keeps its directory page visible, allowing a destination on any writable drive such as `E:\\SOCDOF`.
+- The default destination is `{localappdata}\\Programs\\SOCDOF 2.0`.
+- Start menu, optional desktop shortcut, and standard uninstall entries remain available.
+- The official Windows download remains the installer only: `SOCDOF_setup.exe`.
+- Application, project, installer, and documentation metadata are synchronized to `v2.0.3`.
+
 ## v2.0.2 - 2026-08-26
 
 This patch release adds automatic version delivery and a simple local documentation preview.

@@ -1,5 +1,13 @@
 # Completed Tasks
 
+## v2.0.3 UAC-Free Installer Defaults
+
+- [x] Configure the Windows installer for per-user, UAC-free installation on any selected drive.
+  - Completed: 2026-08-26
+  - Release: v2.0.3
+  - Details: Set `PrivilegesRequired=lowest`, `UsedUserAreasWarning=no`, and `DisableDirPage=no`; changed the default path to `{localappdata}\\Programs\\SOCDOF 2.0`; retained Start menu, optional desktop shortcut, and standard uninstall integration; synchronized the application, project, installer, documentation, and preview versions.
+  - Verification: Static installer and version checks passed; Inno Setup and .NET compilation require the Windows GitHub Actions runner.
+
 ## v2.0.2 Installer-Only Windows Release
 
 - [x] Make the Inno Setup package the only official Windows download and allow free installation-path selection.
