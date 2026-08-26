@@ -10,6 +10,8 @@ This patch release adds automatic version delivery and a simple local documentat
 - `vX.0.0` tags are published as regular releases; minor and patch tags such as `v2.0.2` are published as pre-releases.
 - Release descriptions continue to resolve from `versions/releases/vX-release.md`, with `versions/VX.md` as a fallback.
 - Added a dependency-free preview command: `npm run dev -- -p 3000 -H 0.0.0.0`.
+- Tagged builds publish only `SOCDOF_setup.exe`; the self-contained application is packaged inside the installer and is not offered as a separate download.
+- The installer uses `{autopf}\\SOCDOF 2.0` by default while allowing the user to choose a different destination, and provides Start menu, optional desktop, and uninstall entries.
 - Synchronized application, project, and documentation metadata to `v2.0.2`.
 
 ## v2.0.1 - 2026-08-26
@@ -21,7 +23,7 @@ This patch release makes startup failures visible and turns the Windows setup pa
 - Global WPF and AppDomain exception handling now displays the exact failure details in a MessageBox instead of failing silently.
 - SQLite initialization, AppData directory creation, and startup backup failures are surfaced with actionable diagnostics.
 - The uploaded `socdof_v2_icon.ico` is used as the Windows application icon, with `socdof_v2_icon.png` as the visual fallback; missing or invalid assets are handled clearly.
-- Tagged GitHub Actions builds validate and publish `SOCDOF_setup.exe` as the primary Windows release asset alongside `SOCDOF_2.0.exe`.
+- Tagged GitHub Actions builds validate and publish `SOCDOF_setup.exe` as the only official Windows release asset.
 - Application and project metadata are synchronized to `v2.0.1`.
 
 SOCDOF remains offline-first and self-contained. No cloud service or external runtime installation is required for the published Windows application.
@@ -37,10 +39,10 @@ SOCDOF 2.0 is the first major release under the new SOCDOF 2.0 identity.
 - Consistent version and branding metadata across the application, documentation, and release workflow.
 - Release automation that treats `v2.0.0`-style major tags as regular releases while marking later minor and patch tags as pre-releases.
 - Optional local logo support that does not prevent the application from starting when an asset is unavailable.
-- Self-contained Windows executable output named `SOCDOF_2.0.exe` with Publisher `Yuri / Strudel` and the official SOCDOF 2.0 product metadata.
-- Optional tagged-release installer output named `SOCDOF_setup.exe` for a faster Windows setup experience.
+- The Windows setup package uses the self-contained application build and carries Publisher `Yuri / Strudel` with the official SOCDOF 2.0 product metadata.
+- Tagged releases provide `SOCDOF_setup.exe` as the official Windows download with a selectable installation directory.
 
-SOCDOF remains an offline-first native Windows application. Existing local SQLite data, WAL behavior, backups, exports, and read-only localhost API behavior remain part of the product. The release pipeline packages `SOCDOF_2.0.exe` and can attach `SOCDOF_setup.exe` for tagged releases.
+SOCDOF remains an offline-first native Windows application. Existing local SQLite data, WAL behavior, backups, exports, and read-only localhost API behavior remain part of the product. The release pipeline publishes only `SOCDOF_setup.exe`; the self-contained application binary is packaged inside the installer and is not offered as a separate download.
 
 Download builds and view release history at the [SOCDOF 2.0 GitHub Releases](https://github.com/Strudelcode/SOCDOF-2.0/releases) page.
 

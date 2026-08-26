@@ -1,5 +1,13 @@
 # Completed Tasks
 
+## v2.0.2 Installer-Only Windows Release
+
+- [x] Make the Inno Setup package the only official Windows download and allow free installation-path selection.
+  - Completed: 2026-08-26
+  - Release: v2.0.2
+  - Details: Set `DisableDirPage=no` with default `{autopf}\\SOCDOF 2.0`, retained Start menu and optional desktop shortcuts, enabled the standard uninstaller, removed the portable EXE from tagged artifacts and GitHub release uploads, and synchronized the web and V2 release documentation.
+  - Verification: `git diff --check` passed; static reference checks passed; .NET and Inno Setup compilation require the Windows GitHub Actions runner.
+
 ## v2.0.2 Automatic Version Tags and Documentation Preview
 
 - [x] Automate SemVer tag creation after successful `main` pushes and provide a host-configured documentation preview.

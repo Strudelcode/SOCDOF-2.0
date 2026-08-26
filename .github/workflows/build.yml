@@ -37,13 +37,6 @@ jobs:
       - name: Publish self-contained single-file executable
         run: dotnet publish SOCDOF.csproj -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true -o ./publish
 
-      - name: Upload Windows executable artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: SOCDOF-Windows-Executable
-          path: ./publish
-          if-no-files-found: error
-
       - name: Install Inno Setup
         if: startsWith(github.ref, 'refs/tags/')
         shell: pwsh
@@ -119,9 +112,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           name: ${{ github.ref_name }}
-          files: |
-            ./installer-output/SOCDOF_setup.exe
-            ./publish/SOCDOF_2.0.exe
+          files: ./installer-output/SOCDOF_setup.exe
           body_path: ${{ steps.release-metadata.outputs.notes_path }}
           prerelease: ${{ steps.release-metadata.outputs.prerelease }}
           generate_release_notes: false
