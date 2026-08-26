@@ -1,5 +1,17 @@
 # SOCDOF 2.0 Release
 
+## v2.0.2 - 2026-08-26
+
+This patch release adds automatic version delivery and a simple local documentation preview.
+
+### Highlights
+
+- Successful `main` builds read the active semantic version from `AppConfig.cs` and create the matching immutable Git tag.
+- `vX.0.0` tags are published as regular releases; minor and patch tags such as `v2.0.2` are published as pre-releases.
+- Release descriptions continue to resolve from `versions/releases/vX-release.md`, with `versions/VX.md` as a fallback.
+- Added a dependency-free preview command: `npm run dev -- -p 3000 -H 0.0.0.0`.
+- Synchronized application, project, and documentation metadata to `v2.0.2`.
+
 ## v2.0.1 - 2026-08-26
 
 This patch release makes startup failures visible and turns the Windows setup package into a required tagged-release output.

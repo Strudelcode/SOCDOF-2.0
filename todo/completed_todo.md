@@ -1,5 +1,13 @@
 # Completed Tasks
 
+## v2.0.2 Automatic Version Tags and Documentation Preview
+
+- [x] Automate SemVer tag creation after successful `main` pushes and provide a host-configured documentation preview.
+  - Completed: 2026-08-26
+  - Release: v2.0.2
+  - Details: GitHub Actions reads `AppConfig.Version`, creates an immutable matching tag when the current version is new, and lets the tag-triggered job publish major `vX.0.0` releases or pre-releases for other SemVer tags using dynamic major-version release notes. Added a dependency-free Node static server and `npm run dev -- -p 3000 -H 0.0.0.0`.
+  - Verification: `git diff --check`, `node --check scripts/preview-server.js`, and managed preview smoke tests passed; local .NET build remains unavailable in this workspace.
+
 ## v2.0.1 Startup Diagnostics and Required Setup Release
 
 - [x] Prevent silent startup failures and make the setup installer the required tagged-release package.
