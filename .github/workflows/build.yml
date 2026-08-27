@@ -173,10 +173,11 @@ jobs:
           git fetch origin "refs/tags/${tag}:refs/tags/${tag}" 2>$null
           if ($LASTEXITCODE -eq 0) {
             $tagCommit = (git rev-list -n 1 $tag).Trim()
-            if ($tagCommit -ne $env:CURRENT_COMMIT) {
-              throw "Version tag $tag already points to $tagCommit. Increment AppConfig.Version before pushing another main build."
+            if ($tagCommit -eq $env:CURRENT_COMMIT) {
+              Write-Host "Version tag $tag already points to the current commit; no tag update is required."
+            } else {
+              Write-Warning "Version tag $tag already exists at $tagCommit. The current commit will not overwrite an immutable release tag. Increment AppConfig.Version for the next release."
             }
-            Write-Host "Version tag $tag already points to the current commit; no tag update is required."
             exit 0
           }
 
