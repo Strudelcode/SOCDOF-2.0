@@ -22,20 +22,64 @@ jobs:
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up .NET 8 SDK
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0.x
 
+      - name: Determine application version
+        id: version
+        shell: pwsh
+        run: |
+          $appConfig = Get-Content -Raw -LiteralPath 'AppConfig.cs'
+          $versionMatch = [regex]::Match($appConfig, 'Version\s*=\s*"v(?<version>[0-9]+\.[0-9]+\.[0-9]+)"')
+          if (-not $versionMatch.Success) {
+            throw 'AppConfig.cs does not contain a supported semantic Version value such as v2.0.4.'
+          }
+
+          $version = $versionMatch.Groups['version'].Value
+          $tag = "v$version"
+          "version=$version" >> $env:GITHUB_OUTPUT
+          "tag=$tag" >> $env:GITHUB_OUTPUT
+          Write-Host "Application version: $version"
+          Write-Host "Release tag: $tag"
+
+      - name: Validate tag matches application version
+        if: startsWith(github.ref, 'refs/tags/')
+        shell: pwsh
+        run: |
+          $expected = '${{ steps.version.outputs.tag }}'
+          $actual = '${{ github.ref_name }}'
+          if ($actual -ne $expected) {
+            throw "Release tag $actual does not match AppConfig version $expected."
+          }
+
       - name: Restore dependencies
         run: dotnet restore
 
       - name: Build Release
-        run: dotnet build -c Release
+        run: dotnet build SOCDOF.csproj -c Release --no-restore /p:Version=${{ steps.version.outputs.version }} /p:FileVersion=${{ steps.version.outputs.version }}.0 /p:AssemblyVersion=${{ steps.version.outputs.version }}.0
 
       - name: Publish self-contained single-file executable
-        run: dotnet publish SOCDOF.csproj -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true -o ./publish
+        shell: pwsh
+        env:
+          SOCDOF_VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          $buildDate = (Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ')
+          dotnet publish SOCDOF.csproj -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true /p:Version=$env:SOCDOF_VERSION /p:FileVersion="$env:SOCDOF_VERSION.0" /p:AssemblyVersion="$env:SOCDOF_VERSION.0" /p:InformationalVersion="$env:SOCDOF_VERSION+${{ github.sha }}" -o ./publish
+
+          $exe = Join-Path $PWD 'publish\SOCDOF_2.0.exe'
+          if (-not (Test-Path -LiteralPath $exe -PathType Leaf)) {
+            throw "Published executable was not produced: $exe"
+          }
+
+          $now = Get-Date
+          [System.IO.File]::SetLastWriteTimeUtc($exe, $now.ToUniversalTime())
+          Write-Host "Build timestamp (UTC): $buildDate"
+          Write-Host "Published executable: $exe"
 
       - name: Install Inno Setup
         if: startsWith(github.ref, 'refs/tags/')
@@ -46,6 +90,8 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         shell: pwsh
         working-directory: installer
+        env:
+          SOCDOF_VERSION: ${{ steps.version.outputs.version }}
         run: |
           $iscc = Join-Path ${env:ProgramFiles(x86)} 'Inno Setup 6\ISCC.exe'
           if (-not (Test-Path -LiteralPath $iscc -PathType Leaf)) {
@@ -79,7 +125,7 @@ jobs:
         id: release-metadata
         shell: pwsh
         run: |
-          $tag = "${{ github.ref_name }}"
+          $tag = '${{ github.ref_name }}'
           if ($tag -notmatch '^v[0-9]+\.[0-9]+\.[0-9]+$') {
             throw "Unsupported release tag: $tag"
           }
@@ -123,13 +169,7 @@ jobs:
         env:
           CURRENT_COMMIT: ${{ github.sha }}
         run: |
-          $appConfig = Get-Content -Raw -LiteralPath 'AppConfig.cs'
-          $versionMatch = [regex]::Match($appConfig, 'Version\s*=\s*"v(?<version>[0-9]+\.[0-9]+\.[0-9]+)"')
-          if (-not $versionMatch.Success) {
-            throw 'AppConfig.cs does not contain a supported semantic Version value such as v2.0.2.'
-          }
-
-          $tag = "v$($versionMatch.Groups['version'].Value)"
+          $tag = '${{ steps.version.outputs.tag }}'
           git fetch origin "refs/tags/${tag}:refs/tags/${tag}" 2>$null
           if ($LASTEXITCODE -eq 0) {
             $tagCommit = (git rev-list -n 1 $tag).Trim()
