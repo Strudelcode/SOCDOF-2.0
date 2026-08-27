@@ -1,9 +1,13 @@
 #define AppName "SOCDOF 2.0"
-#define AppVersion "2.0.4"
+#define AppVersion GetEnv("SOCDOF_VERSION")
 #define AppPublisher "Yuri / Strudel"
 #define AppExeName "SOCDOF_2.0.exe"
 #define SourceDir "..\publish"
 #define OutputDir "..\installer-output"
+
+#if AppVersion == ""
+  #error SOCDOF_VERSION environment variable is required.
+#endif
 
 [Setup]
 AppId={{B8CBE0F7-5E7D-4B69-9A4A-70F079B5B0C4}
