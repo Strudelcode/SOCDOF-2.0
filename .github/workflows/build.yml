@@ -1,7 +1,7 @@
+# CI trigger marker: keep this workflow rerunnable from a normal main-branch push.
 name: Build SOCDOF Windows
 
 on:
-  workflow_dispatch:
   push:
     branches:
       - main
@@ -12,52 +12,81 @@ permissions:
   contents: write
 
 concurrency:
-  group: socdof-release
+  group: socdof-main-release
   cancel-in-progress: false
 
 jobs:
   build-windows:
     runs-on: windows-latest
+
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
       - name: Set up .NET 8 SDK
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0.x
+
       - name: Determine application version
         id: version
         shell: pwsh
         run: |
           $appConfig = Get-Content -Raw -LiteralPath 'AppConfig.cs'
-          $m = [regex]::Match($appConfig, 'Version\s*=\s*"v(?<version>[0-9]+\.[0-9]+\.[0-9]+)"')
-          if (-not $m.Success) { throw 'Could not read semantic version from AppConfig.cs.' }
-          $version = $m.Groups['version'].Value
+          $versionMatch = [regex]::Match($appConfig, 'Version\s*=\s*"v(?<version>[0-9]+\.[0-9]+\.[0-9]+)"')
+          if (-not $versionMatch.Success) {
+            throw 'AppConfig.cs does not contain a supported semantic Version value such as v2.0.4.'
+          }
+
+          $version = $versionMatch.Groups['version'].Value
+          $tag = "v$version"
           "version=$version" >> $env:GITHUB_OUTPUT
-          "tag=v$version" >> $env:GITHUB_OUTPUT
-      - name: Validate release tag
+          "tag=$tag" >> $env:GITHUB_OUTPUT
+          Write-Host "Application version: $version"
+          Write-Host "Release tag: $tag"
+
+      - name: Validate tag matches application version
         if: startsWith(github.ref, 'refs/tags/')
         shell: pwsh
         run: |
-          if ('${{ github.ref_name }}' -ne '${{ steps.version.outputs.tag }}') { throw "Tag ${{ github.ref_name }} does not match AppConfig version ${{ steps.version.outputs.tag }}." }
-      - name: Restore
-        run: dotnet restore SOCDOF.csproj
-      - name: Publish Windows executable
+          $expected = '${{ steps.version.outputs.tag }}'
+          $actual = '${{ github.ref_name }}'
+          if ($actual -ne $expected) {
+            throw "Release tag $actual does not match AppConfig version $expected."
+          }
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build Release
+        run: dotnet build SOCDOF.csproj -c Release --no-restore /p:Version=${{ steps.version.outputs.version }} /p:FileVersion=${{ steps.version.outputs.version }}.0 /p:AssemblyVersion=${{ steps.version.outputs.version }}.0
+
+      - name: Publish self-contained single-file executable
         shell: pwsh
         env:
-          VERSION: ${{ steps.version.outputs.version }}
+          SOCDOF_VERSION: ${{ steps.version.outputs.version }}
         run: |
-          dotnet publish SOCDOF.csproj -c Release -r win-x64 --self-contained true --no-restore /p:PublishSingleFile=true /p:Version=$env:VERSION /p:FileVersion="$env:VERSION.0" /p:AssemblyVersion="$env:VERSION.0" /p:InformationalVersion="$env:VERSION+${{ github.sha }}" -o ./publish
+          $buildDate = (Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ')
+          dotnet publish SOCDOF.csproj -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true /p:Version=$env:SOCDOF_VERSION /p:FileVersion="$env:SOCDOF_VERSION.0" /p:AssemblyVersion="$env:SOCDOF_VERSION.0" /p:InformationalVersion="$env:SOCDOF_VERSION+${{ github.sha }}" -o ./publish
+
           $exe = Join-Path $PWD 'publish\SOCDOF_2.0.exe'
-          if (-not (Test-Path $exe)) { throw "Missing published executable: $exe" }
-          [System.IO.File]::SetLastWriteTimeUtc($exe, [DateTime]::UtcNow)
+          if (-not (Test-Path -LiteralPath $exe -PathType Leaf)) {
+            throw "Published executable was not produced: $exe"
+          }
+
+          $now = Get-Date
+          [System.IO.File]::SetLastWriteTimeUtc($exe, $now.ToUniversalTime())
+          Write-Host "Build timestamp (UTC): $buildDate"
+          Write-Host "Published executable: $exe"
+
       - name: Install Inno Setup
         if: startsWith(github.ref, 'refs/tags/')
         shell: pwsh
-        run: choco install innosetup --yes --no-progress
-      - name: Build setup installer
+        run: choco install innosetup --no-progress --yes
+
+      - name: Build required setup installer
         if: startsWith(github.ref, 'refs/tags/')
         shell: pwsh
         working-directory: installer
@@ -65,57 +94,95 @@ jobs:
           SOCDOF_VERSION: ${{ steps.version.outputs.version }}
         run: |
           $iscc = Join-Path ${env:ProgramFiles(x86)} 'Inno Setup 6\ISCC.exe'
-          if (-not (Test-Path $iscc)) { throw "Inno Setup compiler not found: $iscc" }
+          if (-not (Test-Path -LiteralPath $iscc -PathType Leaf)) {
+            throw "Inno Setup compiler not found at $iscc"
+          }
           & $iscc 'SOCDOF.iss'
-          if ($LASTEXITCODE -ne 0) { throw "Inno Setup failed with exit code $LASTEXITCODE." }
-      - name: Validate setup installer
+          if ($LASTEXITCODE -ne 0) {
+            throw "Inno Setup compilation failed with exit code $LASTEXITCODE"
+          }
+
+      - name: Validate required setup installer
         if: startsWith(github.ref, 'refs/tags/')
         shell: pwsh
         run: |
-          if (-not (Test-Path './installer-output/SOCDOF_setup.exe')) { throw 'SOCDOF_setup.exe was not produced.' }
-      - name: Upload setup artifact
+          $installerPath = './installer-output/SOCDOF_setup.exe'
+          if (-not (Test-Path -LiteralPath $installerPath -PathType Leaf)) {
+            throw "The required setup installer was not produced: $installerPath"
+          }
+          Write-Host "Validated release installer: $installerPath"
+
+      - name: Upload setup installer artifact
         if: startsWith(github.ref, 'refs/tags/')
         uses: actions/upload-artifact@v4
         with:
           name: SOCDOF-Setup-Installer
           path: ./installer-output/SOCDOF_setup.exe
           if-no-files-found: error
-      - name: Determine release metadata
+
+      - name: Determine release channel and notes file
         if: startsWith(github.ref, 'refs/tags/')
-        id: release
+        id: release-metadata
         shell: pwsh
         run: |
           $tag = '${{ github.ref_name }}'
-          $major = [regex]::Match($tag, '^v[0-9]+').Value
-          $primary = "versions/releases/${major}-release.md"
-          $fallback = "versions/${major.ToUpperInvariant()}.md"
-          if (Test-Path $primary) { $notes = $primary } elseif (Test-Path $fallback) { $notes = $fallback } else { throw "No release notes found for $tag." }
-          $pre = if ($tag -match '^v[0-9]+\.0\.0$') { 'false' } else { 'true' }
-          "notes=$notes" >> $env:GITHUB_OUTPUT
-          "prerelease=$pre" >> $env:GITHUB_OUTPUT
-      - name: Publish GitHub release
+          if ($tag -notmatch '^v[0-9]+\.[0-9]+\.[0-9]+$') {
+            throw "Unsupported release tag: $tag"
+          }
+
+          $majorVersion = [regex]::Match($tag, '^v[0-9]+').Value
+          $primaryPath = "versions/releases/${majorVersion}-release.md"
+          $fallbackPath = "versions/${majorVersion.ToUpperInvariant()}.md"
+
+          if (Test-Path -LiteralPath $primaryPath) {
+            $notesPath = $primaryPath
+          } elseif (Test-Path -LiteralPath $fallbackPath) {
+            $notesPath = $fallbackPath
+          } else {
+            throw "No release notes file found for $tag. Checked $primaryPath and $fallbackPath."
+          }
+
+          if ($tag -match '^v[0-9]+\.0\.0$') {
+            $preRelease = 'false'
+          } else {
+            $preRelease = 'true'
+          }
+
+          "notes_path=$notesPath" >> $env:GITHUB_OUTPUT
+          "prerelease=$preRelease" >> $env:GITHUB_OUTPUT
+          Write-Host "Using release notes: $notesPath"
+          Write-Host "Release channel: $(if ($preRelease -eq 'true') { 'pre-release' } else { 'full release' })"
+
+      - name: Publish tagged GitHub release
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
           name: ${{ github.ref_name }}
           files: ./installer-output/SOCDOF_setup.exe
-          body_path: ${{ steps.release.outputs.notes }}
-          prerelease: ${{ steps.release.outputs.prerelease }}
+          body_path: ${{ steps.release-metadata.outputs.notes_path }}
+          prerelease: ${{ steps.release-metadata.outputs.prerelease }}
           generate_release_notes: false
-      - name: Create version tag from main
+
+      - name: Create immutable version tag from AppConfig
         if: github.ref == 'refs/heads/main'
         shell: pwsh
         env:
           CURRENT_COMMIT: ${{ github.sha }}
         run: |
           $tag = '${{ steps.version.outputs.tag }}'
-          git fetch origin "refs/tags/$tag:refs/tags/$tag" 2>$null
+          git fetch origin "refs/tags/${tag}:refs/tags/${tag}" 2>$null
           if ($LASTEXITCODE -eq 0) {
-            Write-Host "Tag $tag already exists. No tag update will be attempted."
+            $tagCommit = (git rev-list -n 1 $tag).Trim()
+            if ($tagCommit -eq $env:CURRENT_COMMIT) {
+              Write-Host "Version tag $tag already points to the current commit; no tag update is required."
+            } else {
+              Write-Warning "Version tag $tag already exists at $tagCommit. The current commit will not overwrite an immutable release tag. Increment AppConfig.Version for the next release."
+            }
             exit 0
           }
+
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git tag $tag $env:CURRENT_COMMIT
           git push origin $tag
-          Write-Host "Created tag $tag; tag push will start the release build."
+          Write-Host "Created and pushed immutable version tag $tag."
